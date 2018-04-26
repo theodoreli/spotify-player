@@ -51,6 +51,8 @@ class Player extends React.Component {
     // play song
   }
 
+  audio = document.getElementById('audio')
+
   handleChange = (ev) => {
     this.setState({searchValue: ev.target.value});
   }
@@ -62,15 +64,26 @@ class Player extends React.Component {
   }
 
   handlePause = () => {
-    const audio = document.getElementById('audio');
-    audio.pause();
+    this.audio.pause();
     this.setState({isPaused: true});
   }
 
   handlePlay = () => {
-    const audio = document.getElementById('audio');
-    audio.play();
+    this.audio.play();
     this.setState({isPaused: false});
+  }
+
+  handleNext = () => {
+    this.setState({trackIndex: this.state.trackIndex + 1});
+  }
+
+  handlePrev = () => {
+    const trackIndex = this.state.trackIndex;
+    if (trackIndex === 0 ) {
+      this.setState({trackIndex: 0})
+    } else {
+      this.setState({trackIndex: trackIndex - 1});
+    }
   }
 
   render() {
@@ -117,14 +130,14 @@ class Player extends React.Component {
             <ArrowBack onClick={() => this.props.history.push('/logged-in/search')} />
           </IconButton>
           <IconButton aria-label="Previous">
-            <SkipPreviousIcon />
+            <SkipPreviousIcon onClick={this.handlePrev}/>
           </IconButton>
           <IconButton aria-label="Play/pause">
             { !this.state.isPaused ? <PauseIcon onClick={this.handlePause}/>
                                    : <PlayArrowIcon onClick={this.handlePlay} className={tp.classes.playIcon} /> }
           </IconButton>
           <IconButton aria-label="Next">
-            <SkipNextIcon onClick={()=>this.setState({trackIndex: this.state.trackIndex + 1})}/>
+            <SkipNextIcon onClick={this.handleNext}/>
           </IconButton>
         </CardContent>
       </div>
