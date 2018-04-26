@@ -71,14 +71,12 @@ class Player extends React.Component {
   }
 
   handlePause = () => {
-    const audio = document.getElementById('audio')
-    audio.pause();
+    this.audio.pause();
     this.setState({isPaused: true});
   }
 
   handlePlay = () => {
-    const audio = document.getElementById('audio')
-    audio.play();
+    this.audio.play();
     this.setState({isPaused: false});
   }
 
@@ -127,8 +125,6 @@ class Player extends React.Component {
     const albumImg = track.album.images[1].url;
 
     const trackProps = {albumImg, trackName, artists};
-
-    // TODO: object members .duration and .currentTime can tell us where we are
 
     const progressBarProps = {
       duration: this.state.audioDuration,
