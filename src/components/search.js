@@ -6,6 +6,8 @@ import { Route, Redirect } from 'react-router';
 import Card, { CardContent, CardMedia } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 
+import { addTracks } from '../actions';
+
 const root = `
   width: inherit;
   height: inherit;
@@ -57,14 +59,14 @@ class Search extends React.Component {
         const headers = {Authorization: `Bearer ${this.props.appStore.accessToken}`};
         const response = await axios.get(`https://api.spotify.com/v1/search`
                          + `?q=${search}`
-                         + `&type=album,artist,track`
-                         + `&limit=2`,
+                         + `&type=track`
+                         + `&limit=5`,
                          {headers})
         console.log(response);
         if (response.status === 200) {
-          this.props.dispatch();
+          this.props.dispatch(addTracks(response.data.tracks.items));
+          this.props.history.push('/logged-in/player');
         }
-
       } catch (e) {
         console.log(e);
       }

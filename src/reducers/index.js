@@ -32,9 +32,21 @@ const ttl = (state = '', action) => {
   }
 };
 
+const tracks = (state = [], action) => {
+  switch (action.type) {
+    case 'ADD_TRACKS':
+      state = action.value;
+      return state;
+
+    default:
+      return state;
+  }
+};
+
 const data = combineReducers({
   accessToken,
   ttl,
+  tracks,
 });
 
 export default data;
