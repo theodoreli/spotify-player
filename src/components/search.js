@@ -8,6 +8,7 @@ import TextField from 'material-ui/TextField';
 
 import { addAccessToken, addTracks } from '../actions';
 import speaker from '../img/speaker.jpg';
+import { control } from '../shared-styles/';
 
 const root = `
   width: inherit;
@@ -22,13 +23,6 @@ const cover = `
   width: 300px;
   height: 300px;
   background-position: right;
-`;
-
-const control = `
-  display: flex;
-  height: 100px;
-  width: 90%;
-  justify-content: center;
 `;
 
 const errorMessage = `

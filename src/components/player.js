@@ -5,14 +5,15 @@ import injectSheet from 'react-jss';
 import { Route, Redirect } from 'react-router';
 import Card, { CardContent, CardMedia } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
-import SearchIcon from '@material-ui/icons/Search';
 import Typography from 'material-ui/Typography';
 
 import { addTracks } from '../actions';
+import { control } from '../shared-styles/';
 
 const root = `
   width: inherit;
@@ -35,8 +36,9 @@ const cover = `
 
 const sheet = {
   card,
-  root,
+  control,
   cover,
+  root,
 };
 
 class Player extends React.Component {
@@ -109,7 +111,7 @@ class Player extends React.Component {
         </CardMedia>
         <CardContent className={tp.classes.control}>
           <IconButton aria-label="Search">
-            <SearchIcon onClick={() => this.props.history.push('/logged-in/search')} />
+            <ArrowBack onClick={() => this.props.history.push('/logged-in/search')} />
           </IconButton>
           <IconButton aria-label="Previous">
             <SkipPreviousIcon />
