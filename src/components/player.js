@@ -87,11 +87,21 @@ class Player extends React.Component {
     const audioSrc = track.preview_url;
     if (audioSrc === null) this.setState({trackIndex: this.state.trackIndex + 1});
     const trackName = track.name;
-    // TODO: Cleanup this ternary.
-    const artists = track.artists.length > 1 ? track.artists.reduce((acc, curr) => {
-                                                 return `${acc} ${curr.name}`
-                                               }, `${track.artists[0].name} feat. `)
-                                             : track.artists[0].name;
+
+    const getArtists = artists => {
+      let result = artists[0].name;
+
+      if (artists.length === 1) {
+        return result
+      }
+
+      let featuredArtists = artists.slice(1).map(artist => artist.name).join(', ');
+      result += ' feat. ' + featuredArtists;
+
+      return result
+    }
+
+    const artists = getArtists(track.artists);
     const albumImg = track.album.images[1].url;
 
     const trackProps = {albumImg, trackName, artists};
