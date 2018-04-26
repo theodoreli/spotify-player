@@ -6,7 +6,7 @@ import { Route, Redirect } from 'react-router';
 import Card, { CardContent, CardMedia } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 
-import { addTracks } from '../actions';
+import { addAccessToken, addTracks } from '../actions';
 import speaker from '../img/speaker.jpg';
 
 const root = `
@@ -70,8 +70,17 @@ class Search extends React.Component {
           this.props.dispatch(addTracks(response.data.tracks.items));
           this.props.history.push('/logged-in/player');
         }
-      } catch (e) {
-        console.log(e);
+      } catch (err) {
+        if (err.response.status === 401) {
+          // TODO prompt user that we are going thru login.
+
+          // clear redux properties and clear localstorage so that we don't try to read
+          // accessToken. If the app reads a value in accessToken, it assumes validity.
+          // perhaps putting a TTL is good
+          this.props.dispatch(addTracks(null));
+          this.props.dispatch(addAccessToken(null));
+          this.props.history.push('/'); // TODO: there is some router buginess, fix this
+        }
       }
     })();
 

@@ -74,21 +74,22 @@ class Player extends React.Component {
     const tp = this.props;
     const trackIndex = this.state.trackIndex;
     if (trackIndex >= tp.appStore.tracks.length) {
-
       // TODO: implement a popup that says we have exhausted all previewable tracks
       this.props.history.push('/logged-in/search')
+      return null; // so that we dont execute the rest of this render()
     }
 
     const track = tp.appStore.tracks[trackIndex];
 
+    const audioSrc = track.preview_url;
+    if (audioSrc === null) this.setState({trackIndex: this.state.trackIndex + 1});
     const trackName = track.name;
+    // TODO: Cleanup this ternary.
     const artists = track.artists.length > 1 ? track.artists.reduce((acc, curr) => {
                                                  return `${acc} ${curr.name}`
                                                }, `${track.artists[0].name} feat. `)
                                              : track.artists[0].name;
     const albumImg = track.album.images[1].url;
-    const audioSrc = track.preview_url;
-    if (audioSrc === null) this.setState({trackIndex: this.state.trackIndex + 1});
 
     // TODO: add response handler for unauthorized. means we need to login again
 
