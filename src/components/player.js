@@ -10,6 +10,7 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SearchIcon from '@material-ui/icons/Search';
+import Typography from 'material-ui/Typography';
 
 import { addTracks } from '../actions';
 
@@ -72,13 +73,19 @@ class Player extends React.Component {
   render() {
     const tp = this.props;
     const trackIndex = this.state.trackIndex;
+    if (trackIndex >= tp.appStore.tracks.length) {
+
+      // TODO: implement a popup that says we have exhausted all previewable tracks
+      this.props.history.push('/logged-in/search')
+    }
+
     const track = tp.appStore.tracks[trackIndex];
 
-    const name = track.name;
-    const artists = track.artists.length > 1 ? track.artists.reduce((acc, curr, index, arr) => {
-                                                 `acc ${curr}`
-                                               }, `${track.artists[0]} feat. `)
-                                             : track.artists[0];
+    const trackName = track.name;
+    const artists = track.artists.length > 1 ? track.artists.reduce((acc, curr) => {
+                                                 return `${acc} ${curr.name}`
+                                               }, `${track.artists[0].name} feat. `)
+                                             : track.artists[0].name;
     const albumImg = track.album.images[1].url;
     const audioSrc = track.preview_url;
     if (audioSrc === null) this.setState({trackIndex: this.state.trackIndex + 1});
@@ -88,6 +95,13 @@ class Player extends React.Component {
     return (
       <div className={tp.classes.root}>
         <audio id="audio" src={audioSrc} autoPlay />
+        <Typography variant="headline">
+          {trackName}
+        </Typography>
+        <Typography variant="subheading" color="textSecondary">
+         {artists}
+        </Typography>
+
         <CardMedia image={albumImg} className={tp.classes.cover}>
         </CardMedia>
         <CardContent className={tp.classes.control}>

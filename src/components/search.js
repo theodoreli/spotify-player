@@ -7,6 +7,7 @@ import Card, { CardContent, CardMedia } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 
 import { addTracks } from '../actions';
+import speaker from '../img/speaker.jpg';
 
 const root = `
   width: inherit;
@@ -25,6 +26,7 @@ const card = `
 const cover = `
   width: 300px;
   height: 300px;
+  background-position-x: -100px;
 `;
 
 const sheet = {
@@ -80,7 +82,7 @@ class Search extends React.Component {
 
     return (
       <div className={tp.classes.root}>
-        <CardMedia image="https://i.scdn.co/image/985cc10acdbbedb6a16d7c74f9e23553e2b28dbc" className={tp.classes.cover}>
+        <CardMedia image={speaker} className={tp.classes.cover}>
         </CardMedia>
         <CardContent className={tp.classes.control}>
           <TextField
