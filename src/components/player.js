@@ -91,17 +91,19 @@ class Player extends React.Component {
                                              : track.artists[0].name;
     const albumImg = track.album.images[1].url;
 
-    // TODO: add response handler for unauthorized. means we need to login again
+    // TODO: object members .duration and .currentTime can tell us where we are
 
     return (
       <div className={tp.classes.root}>
-        <audio id="audio" src={audioSrc} autoPlay />
+        <audio id="audio" src={audioSrc} autoPlay onEnd/>
+        <CardContent>
         <Typography variant="headline">
           {trackName}
         </Typography>
         <Typography variant="subheading" color="textSecondary">
          {artists}
         </Typography>
+        </CardContent>
 
         <CardMedia image={albumImg} className={tp.classes.cover}>
         </CardMedia>

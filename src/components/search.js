@@ -18,27 +18,40 @@ const root = `
   align-items: center;
 `;
 
-const card = `
-  width: 700px;
-  height: 1200px;
-`;
-
 const cover = `
   width: 300px;
   height: 300px;
-  background-position-x: -100px;
+  background-position: right;
+`;
+
+const control = `
+  display: flex;
+  height: 100px;
+  width: 90%;
+  justify-content: center;
+`;
+
+const errorMessage = `
+  color: red;
+  overflow: hidden;
+`;
+
+const searchBar = `
+  width: inherit%;
 `;
 
 const sheet = {
-  card,
-  root,
   cover,
+  control,
+  errorMessage,
+  root,
+  searchBar,
 };
 
 class Search extends React.Component {
   state = {
     searchValue: '',
-
+    errorMessage: '',
   }
   componentDidMount() {
     console.log(this.props)
@@ -55,6 +68,11 @@ class Search extends React.Component {
       return;
     }
 
+    if (this.state.searchValue === '') {
+      this.setState({errorMessage: 'Oops! Looks like there wasn\'t any search terms.'});
+      return;
+    }
+
     (async () => {
       try {
         const search = this.state.searchValue;
@@ -66,10 +84,16 @@ class Search extends React.Component {
                          {headers})
         console.log(response);
         // TODO: add response handler for unauthorized. means we need to login again
-        if (response.status === 200) {
-          this.props.dispatch(addTracks(response.data.tracks.items));
-          this.props.history.push('/logged-in/player');
+        if (response.data.tracks.items.length === 0) {
+          this.setState({
+            errorMessage: `Looks like your search "${this.state.searchValue}" `
+                          + `didn't return any tracks. Try another search term`
+          });
+          return;
         }
+
+        this.props.dispatch(addTracks(response.data.tracks.items));
+        this.props.history.push('/logged-in/player');
       } catch (err) {
         if (err.response.status === 401) {
           // TODO prompt user that we are going thru login.
@@ -79,7 +103,7 @@ class Search extends React.Component {
           // perhaps putting a TTL is good
           this.props.dispatch(addTracks(null));
           this.props.dispatch(addAccessToken(null));
-          this.props.history.push('/'); // TODO: there is some router buginess, fix this
+          this.props.history.push('/');
         }
       }
     })();
@@ -88,6 +112,11 @@ class Search extends React.Component {
 
   render() {
     const tp = this.props;
+    const helper = () => (
+      <React.Fragment>
+        helper
+      </React.Fragment>
+    );
 
     return (
       <div className={tp.classes.root}>
@@ -103,6 +132,8 @@ class Search extends React.Component {
            onChange={this.handleChange}
            onKeyUp={this.handleKeyUp}
            value={this.state.searchValue}
+           FormHelperTextProps={{className: tp.classes.errorMessage}}
+           helperText={this.state.errorMessage}
            />
         </CardContent>
       </div>

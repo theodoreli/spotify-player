@@ -17,8 +17,7 @@ const root = `
 `;
 
 const card = `
-  width: 700px;
-  height: 1200px;
+  width: 300px;
 `;
 
 const sheet = {
@@ -40,7 +39,7 @@ class LoggedIn extends React.Component {
 
     return (
       <div className={tp.classes.root}>
-        <Card>
+        <Card className={tp.classes.card}>
           { this.state.isSplash ? (<Redirect to="/logged-in/search"/>)
                                 : (<Redirect to="/logged-in/player"/>) }
           <Route exact path="/logged-in/search" component={Search}/>
