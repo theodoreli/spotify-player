@@ -5,7 +5,7 @@ import { Redirect } from 'react-router';
 import injectSheet from 'react-jss';
 import querystring from 'querystring';
 
-import { addAccessToken } from '../actions/';
+import { addAccessToken, addTTL } from '../actions/';
 
 const root = `
   width: 980px;
@@ -34,8 +34,12 @@ class Entry extends Component {
 
     this.redirectUrl += querystring.stringify(this.queryParams)
     const isUserLoggedIn = () => {
+      console.log(this.props);
 
-        debugger;
+      if (this.props.appStore.accessToken) {
+        return true;
+      }
+
       const href = window.location.href;
       //let queryParams = window.location.search;
       let queryParams = href.split('?', 2)[1] || href.split('#', 2)[1];
@@ -47,6 +51,8 @@ class Entry extends Component {
         console.log(parsed);
         const accessToken = parsed.access_token;
         const error = parsed.error;
+        const ttlSeconds = parsed.expires_in;
+          console.log(ttlSeconds);
 
         if (error) {
           // notify user that need to retry
@@ -55,7 +61,9 @@ class Entry extends Component {
 
         if (accessToken) {
           // fiddle with access token.
+          // TODO: Use middleware to save to cookies
           this.props.dispatch(addAccessToken(accessToken));
+          this.props.dispatch(addTTL(ttlSeconds));
           // put acccess token in redux store. Need to see if this is safe.
           // then proceed to login page.
           return true;

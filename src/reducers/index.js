@@ -21,8 +21,20 @@ const accessToken = (state = '', action) => {
   }
 };
 
+const ttl = (state = '', action) => {
+  switch (action.type) {
+    case 'ADD_TTL':
+      state = action.value;
+      return state;
+
+    default:
+      return state;
+  }
+};
+
 const data = combineReducers({
   accessToken,
+  ttl,
 });
 
 export default data;

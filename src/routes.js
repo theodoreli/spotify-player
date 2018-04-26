@@ -6,7 +6,7 @@ import LoggedIn from './containers/loggedIn.js';
 
 export default (
   <React.Fragment>
-    <Route path="/" component={Entry}/>
+    <Route exact path="/" component={Entry}/>
     <Route path="/logged-in" component={LoggedIn}/>
     <Redirect to="/" />
   </React.Fragment>
