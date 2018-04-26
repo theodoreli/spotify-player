@@ -47,29 +47,20 @@ class Player extends React.Component {
     trackIndex: 0,
     isPaused: false,
   }
-  componentDidMount() {
-    // play song
-  }
 
-  audio = document.getElementById('audio')
-
-  handleChange = (ev) => {
-    this.setState({searchValue: ev.target.value});
-  }
-
-  handleKeyUp = ev => {
-    if (ev.key !== 'Enter') {
-      return;
-    }
+  handleBack = () => {
+    this.props.history.push('/logged-in/search')
   }
 
   handlePause = () => {
-    this.audio.pause();
+    const audio = document.getElementById('audio')
+    audio.pause();
     this.setState({isPaused: true});
   }
 
   handlePlay = () => {
-    this.audio.play();
+    const audio = document.getElementById('audio')
+    audio.play();
     this.setState({isPaused: false});
   }
 
@@ -123,17 +114,17 @@ class Player extends React.Component {
 
     return (
       <div className={tp.classes.root}>
-        <audio id="audio" src={audioSrc} autoPlay onEnd/>
+        <audio id="audio" src={audioSrc} autoPlay onEnd />
         <TrackCover {...trackProps} />
         <CardContent className={tp.classes.control}>
-          <IconButton aria-label="Search">
-            <ArrowBack onClick={() => this.props.history.push('/logged-in/search')} />
+          <IconButton aria-label="Back">
+            <ArrowBack onClick={this.handleBack} />
           </IconButton>
           <IconButton aria-label="Previous">
-            <SkipPreviousIcon onClick={this.handlePrev}/>
+            <SkipPreviousIcon onClick={this.handlePrev} />
           </IconButton>
           <IconButton aria-label="Play/pause">
-            { !this.state.isPaused ? <PauseIcon onClick={this.handlePause}/>
+            { !this.state.isPaused ? <PauseIcon onClick={this.handlePause} />
                                    : <PlayArrowIcon onClick={this.handlePlay} className={tp.classes.playIcon} /> }
           </IconButton>
           <IconButton aria-label="Next">

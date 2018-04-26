@@ -1,6 +1,5 @@
 import injectSheet from 'react-jss';
 import React from 'react';
-import Typography from 'material-ui/Typography';
 
 const root = `
   display: flex;
@@ -34,10 +33,10 @@ const artists = `
 `;
 
 const sheet = {
-    trackName,
-    artists,
-    meta,
+  artists,
+  meta,
   root,
+  trackName,
 };
 
 const TrackCover = ({classes, trackName, artists, albumImg}) => (
