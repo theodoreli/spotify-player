@@ -37,7 +37,7 @@ const errorMessage = `
 `;
 
 const searchBar = `
-  width: inherit%;
+  width: inherit;
 `;
 
 const sheet = {
