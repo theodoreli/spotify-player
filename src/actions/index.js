@@ -1,9 +1,4 @@
-export const addAuthorFilter = filter => ({
-  type: 'ADD_AUTHOR_FILTER',
-  filter
-});
-
-export const addLabelsFilter = filter => ({
-  type: 'ADD_LABELS_FILTER',
-  filter
+export const addAccessToken = token => ({
+  type: 'ADD_ACCESS_TOKEN',
+  token
 });

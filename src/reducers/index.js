@@ -10,10 +10,10 @@ import { combineReducers } from 'redux';
  * const filterAuthor = (state = {filterReporter: ''}, action) => {
  */
 
-const filterAuthor = (state = '', action) => {
+const accessToken = (state = '', action) => {
   switch (action.type) {
-    case 'ADD_AUTHOR_FILTER':
-      state = action.filter;
+    case 'ADD_ACCESS_TOKEN':
+      state = action.token;
       return state;
 
     default:
@@ -21,20 +21,8 @@ const filterAuthor = (state = '', action) => {
   }
 };
 
-const filterLabels = (state = '', action) => {
-  switch (action.type) {
-    case 'ADD_LABELS_FILTER':
-      state = action.filter;
-      return state;
-
-    default:
-      return state;
-  }
-};
-
-const displayIssues = combineReducers({
-  filterAuthor,
-  filterLabels,
+const data = combineReducers({
+  accessToken,
 });
 
-export default displayIssues;
+export default data;

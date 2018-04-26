@@ -5,8 +5,7 @@ import { Redirect } from 'react-router';
 import injectSheet from 'react-jss';
 import querystring from 'querystring';
 
-import Row from '../components/row.js';
-import TableHeader from '../components/tableHeader.js';
+import { addAccessToken } from '../actions/';
 
 const root = `
   width: 980px;
@@ -36,7 +35,10 @@ class Entry extends Component {
     this.redirectUrl += querystring.stringify(this.queryParams)
     const isUserLoggedIn = () => {
 
-      let queryParams = window.location.search;
+        debugger;
+      const href = window.location.href;
+      //let queryParams = window.location.search;
+      let queryParams = href.split('?', 2)[1] || href.split('#', 2)[1];
       if (queryParams) {
         if (queryParams[0] === '?') {
           queryParams = queryParams.slice(1);
@@ -53,7 +55,7 @@ class Entry extends Component {
 
         if (accessToken) {
           // fiddle with access token.
-          this.props.dispatch();
+          this.props.dispatch(addAccessToken(accessToken));
           // put acccess token in redux store. Need to see if this is safe.
           // then proceed to login page.
           return true;
@@ -67,27 +69,11 @@ class Entry extends Component {
       return false;
     }
 
+    const isLoggedIn = isUserLoggedIn();
+    const timeout = isLoggedIn ? 0: 2000;
     setTimeout(() => {
-      this.setState({isUserLoggedIn: isUserLoggedIn()});
-    }, 3000);
-
-      /*
-    let queryParams = window.location.search;
-    if (queryParams) {
-      if (queryParams[0] === '?') {
-        queryParams = queryParams.slice(1);
-      }
-      let parsed = querystring.parse(queryParams);
-
-      console.log(parsed);
-      // do ajax request. if works, push login
-      // attempt to login. if succesful, push to loggedin page
-    } else {
-      // prompt login
-      this.props.history.push('login');
-
-    }
-    */
+      this.setState({isUserLoggedIn: isLoggedIn});
+    }, timeout);
   }
 
   // TODO: use static getDerivedStateFromProps() in the future
@@ -106,7 +92,7 @@ class Entry extends Component {
       <div>
         { this.state.isUserLoggedIn === null ? renderWelcome()
           : this.state.isUserLoggedIn
-            ? (<Redirect to="logged-in"/>)
+            ? (<Redirect push to="/logged-in"/>)
             : window.location.replace(this.redirectUrl) }
       </div>
     )
