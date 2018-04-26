@@ -15,6 +15,7 @@ import Typography from 'material-ui/Typography';
 import { addTracks } from '../actions';
 import { control } from '../shared-styles/';
 import TrackCover from '../components/trackCover.js';
+import ProgressBar from '../components/progressBar.js';
 
 const root = `
   width: inherit;
@@ -46,6 +47,23 @@ class Player extends React.Component {
   state = {
     trackIndex: 0,
     isPaused: false,
+    audioCurrentTime: 0,
+    audioDuration: 100,
+  }
+
+  componentDidMount() {
+    this.audio = document.getElementById('audio');
+
+    this.audioMetaInterval = setInterval(() => {
+      this.setState({
+        audioCurrentTime: this.audio.currentTime,
+        audioDuration: this.audio.duration,
+      });
+    }, 200)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.audioMetaInterval);
   }
 
   handleBack = () => {
@@ -112,10 +130,16 @@ class Player extends React.Component {
 
     // TODO: object members .duration and .currentTime can tell us where we are
 
+    const progressBarProps = {
+      duration: this.state.audioDuration,
+      currentTime: this.state.audioCurrentTime,
+    };
+
     return (
       <div className={tp.classes.root}>
         <audio id="audio" src={audioSrc} autoPlay onEnd />
         <TrackCover {...trackProps} />
+        <ProgressBar {...progressBarProps} />
         <CardContent className={tp.classes.control}>
           <IconButton aria-label="Back">
             <ArrowBack onClick={this.handleBack} />
