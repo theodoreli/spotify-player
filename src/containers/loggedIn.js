@@ -5,6 +5,7 @@ import injectSheet from 'react-jss';
 import { Route, Redirect } from 'react-router';
 import Card, { CardContent } from 'material-ui/Card';
 
+import Search from '../components/search.js';
 
 const root = `
   width: inherit;
@@ -42,7 +43,7 @@ class LoggedIn extends React.Component {
           hi i am logged in
           { this.state.isSplash ? (<Redirect to="/logged-in/splash"/>)
                                 : (<Redirect to="/logged-in/player"/>) }
-          <Route exact path="/logged-in/splash" render={()=> "rendered"}/>
+          <Route exact path="/logged-in/splash" component={Search}/>
           <Route exact path="/logged-in/player" render={()=> "player render"}/>
 
           <div className={tp.classes.cover}>
