@@ -41,7 +41,6 @@ class Entry extends Component {
       }
 
       const href = window.location.href;
-      //let queryParams = window.location.search;
       let queryParams = href.split('?', 2)[1] || href.split('#', 2)[1];
       if (queryParams) {
         if (queryParams[0] === '?') {

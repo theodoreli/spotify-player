@@ -60,9 +60,10 @@ class Search extends React.Component {
         const response = await axios.get(`https://api.spotify.com/v1/search`
                          + `?q=${search}`
                          + `&type=track`
-                         + `&limit=5`,
+                         + `&limit=20`,
                          {headers})
         console.log(response);
+        // TODO: add response handler for unauthorized. means we need to login again
         if (response.status === 200) {
           this.props.dispatch(addTracks(response.data.tracks.items));
           this.props.history.push('/logged-in/player');
@@ -84,7 +85,7 @@ class Search extends React.Component {
         <CardContent className={tp.classes.control}>
           <TextField
            id="search"
-           label="Search by artist/song/album"
+           label="Search by song"
            type="search"
            className={tp.classes.searchBar}
            margin="normal"

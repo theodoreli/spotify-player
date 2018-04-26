@@ -41,16 +41,10 @@ class LoggedIn extends React.Component {
     return (
       <div className={tp.classes.root}>
         <Card>
-          hi i am logged in
           { this.state.isSplash ? (<Redirect to="/logged-in/search"/>)
                                 : (<Redirect to="/logged-in/player"/>) }
           <Route exact path="/logged-in/search" component={Search}/>
           <Route exact path="/logged-in/player" component={Player}/>
-
-          <div className={tp.classes.cover}>
-          </div>
-          <div className={tp.classes.control}>
-          </div>
         </Card>
       </div>
     )
