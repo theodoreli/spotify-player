@@ -14,6 +14,7 @@ import Typography from 'material-ui/Typography';
 
 import { addTracks } from '../actions';
 import { control } from '../shared-styles/';
+import TrackCover from '../components/trackCover.js';
 
 const root = `
   width: inherit;
@@ -93,22 +94,14 @@ class Player extends React.Component {
                                              : track.artists[0].name;
     const albumImg = track.album.images[1].url;
 
+    const trackProps = {albumImg, trackName, artists};
+
     // TODO: object members .duration and .currentTime can tell us where we are
 
     return (
       <div className={tp.classes.root}>
         <audio id="audio" src={audioSrc} autoPlay onEnd/>
-        <CardContent>
-        <Typography variant="headline">
-          {trackName}
-        </Typography>
-        <Typography variant="subheading" color="textSecondary">
-         {artists}
-        </Typography>
-        </CardContent>
-
-        <CardMedia image={albumImg} className={tp.classes.cover}>
-        </CardMedia>
+        <TrackCover {...trackProps} />
         <CardContent className={tp.classes.control}>
           <IconButton aria-label="Search">
             <ArrowBack onClick={() => this.props.history.push('/logged-in/search')} />
