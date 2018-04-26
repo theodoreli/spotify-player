@@ -6,6 +6,7 @@ import { Route, Redirect } from 'react-router';
 import Card, { CardContent } from 'material-ui/Card';
 
 import Search from '../components/search.js';
+import Player from '../components/player.js';
 
 const root = `
   width: inherit;
@@ -41,10 +42,10 @@ class LoggedIn extends React.Component {
       <div className={tp.classes.root}>
         <Card>
           hi i am logged in
-          { this.state.isSplash ? (<Redirect to="/logged-in/splash"/>)
+          { this.state.isSplash ? (<Redirect to="/logged-in/search"/>)
                                 : (<Redirect to="/logged-in/player"/>) }
-          <Route exact path="/logged-in/splash" component={Search}/>
-          <Route exact path="/logged-in/player" render={()=> "player render"}/>
+          <Route exact path="/logged-in/search" component={Search}/>
+          <Route exact path="/logged-in/player" component={Player}/>
 
           <div className={tp.classes.cover}>
           </div>
