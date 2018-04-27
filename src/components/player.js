@@ -52,12 +52,12 @@ class Player extends React.Component {
   }
 
   componentDidMount() {
-    this.audio = document.getElementById('audio');
+    this.audio = React.createRef();
 
     this.audioMetaInterval = setInterval(() => {
       this.setState({
-        audioCurrentTime: this.audio.currentTime,
-        audioDuration: this.audio.duration,
+        audioCurrentTime: this.audio.current.currentTime,
+        audioDuration: this.audio.current.duration,
       });
     }, 200)
   }
@@ -71,12 +71,12 @@ class Player extends React.Component {
   }
 
   handlePause = () => {
-    this.audio.pause();
+    this.audio.current.pause();
     this.setState({isPaused: true});
   }
 
   handlePlay = () => {
-    this.audio.play();
+    this.audio.current.play();
     this.setState({isPaused: false});
   }
 
@@ -133,7 +133,7 @@ class Player extends React.Component {
 
     return (
       <div className={tp.classes.root}>
-        <audio id="audio" src={audioSrc} autoPlay onEnd />
+        <audio src={audioSrc} autoPlay onEnd ref={this.audio} />
         <TrackCover {...trackProps} />
         <ProgressBar {...progressBarProps} />
         <CardContent className={tp.classes.control}>
