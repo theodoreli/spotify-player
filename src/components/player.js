@@ -57,8 +57,6 @@ class Player extends React.Component {
 
   componentDidMount() {
     this.audioMetaInterval = setInterval(() => {
-        console.log(this.audio.current)
-        console.log(this.audio)
       this.setState({
         audioCurrentTime: this.audio.current.currentTime || 0,
         audioDuration: this.audio.current.duration || 100,
@@ -110,7 +108,6 @@ class Player extends React.Component {
 
     const audioSrc = track.preview_url;
     if (audioSrc === null) this.setState({trackIndex: this.state.trackIndex + 1});
-    const trackName = track.name;
 
     const getArtists = artists => {
       let result = artists[0].name;
@@ -125,10 +122,11 @@ class Player extends React.Component {
       return result
     }
 
-    const artists = getArtists(track.artists);
-    const albumImg = track.album.images[1].url;
-
-    const trackProps = {albumImg, trackName, artists};
+    const trackCoverProps = {
+      albumImg: track.album.images[1].url,
+      artists: getArtists(track.artists),
+      trackName: track.name,
+    };
 
     const progressBarProps = {
       duration: this.state.audioDuration,
@@ -138,7 +136,7 @@ class Player extends React.Component {
     return (
       <div className={tp.classes.root}>
         <audio src={audioSrc} autoPlay onEnd ref={this.audio} />
-        <TrackCover {...trackProps} />
+        <TrackCover {...trackCoverProps} />
         <ProgressBar {...progressBarProps} />
         <CardContent className={tp.classes.control}>
           <IconButton aria-label="Back">

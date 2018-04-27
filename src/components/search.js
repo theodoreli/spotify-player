@@ -74,7 +74,7 @@ class Search extends React.Component {
         const response = await axios.get(`https://api.spotify.com/v1/search`
                          + `?q=${search}`
                          + `&type=track`
-                         + `&limit=20`,
+                         + `&limit=50`,
                          {headers})
         console.log(response);
         // TODO: add response handler for unauthorized. means we need to login again
