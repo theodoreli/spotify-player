@@ -85,8 +85,8 @@ class Search extends React.Component {
           });
           return;
         }
-
-        this.props.dispatch(addTracks(response.data.tracks.items));
+        const filtered = response.data.tracks.items.filter((item) => item.preview_url);
+        this.props.dispatch(addTracks(filtered));
         this.props.history.push('/logged-in/player');
       } catch (err) {
         if (err.response.status === 401) {

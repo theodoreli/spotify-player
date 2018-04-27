@@ -48,10 +48,10 @@ class Player extends React.Component {
     super(props);
     this.audio = React.createRef();
     this.state = {
-      trackIndex: 0,
-      isPaused: false,
       audioCurrentTime: 0,
       audioDuration: 100,
+      isPaused: false,
+      trackIndex: 0,
     };
   }
 
@@ -83,6 +83,12 @@ class Player extends React.Component {
   }
 
   handleNext = () => {
+    if (this.state.trackIndex + 1 >= this.props.appStore.tracks.length) {
+      // TODO: implement a popup that says we have exhausted all previewable tracks
+      this.props.history.push('/logged-in/search')
+      return;
+    }
+
     this.setState({trackIndex: this.state.trackIndex + 1});
   }
 
@@ -95,36 +101,28 @@ class Player extends React.Component {
     }
   }
 
-  render() {
-    const tp = this.props;
-    const trackIndex = this.state.trackIndex;
-    if (trackIndex >= tp.appStore.tracks.length) {
-      // TODO: implement a popup that says we have exhausted all previewable tracks
-      this.props.history.push('/logged-in/search')
-      return null; // so that we dont execute the rest of this render()
-    }
+  _getArtists = artists => {
+    let result = artists[0].name;
 
-    const track = tp.appStore.tracks[trackIndex];
-
-    const audioSrc = track.preview_url;
-    if (audioSrc === null) this.setState({trackIndex: this.state.trackIndex + 1});
-
-    const getArtists = artists => {
-      let result = artists[0].name;
-
-      if (artists.length === 1) {
-        return result
-      }
-
-      let featuredArtists = artists.slice(1).map(artist => artist.name).join(', ');
-      result += ' feat. ' + featuredArtists;
-
+    if (artists.length === 1) {
       return result
     }
 
+    const featuredArtists = artists.slice(1).map(artist => artist.name).join(', ');
+    result += ' feat. ' + featuredArtists;
+
+    return result
+  }
+
+  render() {
+    const tp = this.props;
+    const trackIndex = this.state.trackIndex;
+    const track = tp.appStore.tracks[trackIndex];
+    const audioSrc = track.preview_url;
+
     const trackCoverProps = {
       albumImg: track.album.images[1].url,
-      artists: getArtists(track.artists),
+      artists: this._getArtists(track.artists),
       trackName: track.name,
     };
 
