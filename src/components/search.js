@@ -43,16 +43,21 @@ const sheet = {
 };
 
 class Search extends React.Component {
-  state = {
-    searchValue: '',
-    errorMessage: '',
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchValue: '',
+      errorMessage: '',
+    };
+
+    this.handleKeyUp = this.handleKeyUp.bind(this);
   }
 
   handleChange = (ev) => {
     this.setState({searchValue: ev.target.value});
   }
 
-  handleKeyUp = ev => {
+  async handleKeyUp(ev) {
     if (ev.key !== 'Enter') {
       return;
     }
@@ -62,39 +67,37 @@ class Search extends React.Component {
       return;
     }
 
-    (async () => {
-      try {
-        const search = this.state.searchValue;
-        const headers = {Authorization: `Bearer ${this.props.appStore.accessToken}`};
-        const response = await axios.get(`https://api.spotify.com/v1/search`
-                         + `?q=${search}`
-                         + `&type=track`
-                         + `&limit=50`,
-                         {headers})
-        console.log(response);
-        if (response.data.tracks.items.length === 0) {
-          this.setState({
-            errorMessage: `Looks like your search "${this.state.searchValue}" `
-                          + `didn't return any tracks. Try another search term`
-          });
-          return;
-        }
-        const filtered = response.data.tracks.items.filter((item) => item.preview_url);
-        this.props.dispatch(addTracks(filtered));
-        this.props.history.push('/logged-in/player');
-      } catch (err) {
-        if (err.response.status === 401) {
-          // TODO prompt user that we are going thru login.
-
-          // clear redux properties and clear localstorage so that we don't try to read
-          // accessToken. If the app reads a value in accessToken, it assumes validity.
-          // perhaps putting a TTL is good
-          this.props.dispatch(addTracks(null));
-          this.props.dispatch(addAccessToken(null));
-          this.props.history.push('/');
-        }
+    try {
+      const search = this.state.searchValue;
+      const headers = {Authorization: `Bearer ${this.props.appStore.accessToken}`};
+      const response = await axios.get(`https://api.spotify.com/v1/search`
+                       + `?q=${search}`
+                       + `&type=track`
+                       + `&limit=50`,
+                       {headers})
+      console.log(response);
+      if (response.data.tracks.items.length === 0) {
+        this.setState({
+          errorMessage: `Looks like your search "${this.state.searchValue}" `
+                        + `didn't return any tracks. Try another search term`
+        });
+        return;
       }
-    })();
+      const filtered = response.data.tracks.items.filter((item) => item.preview_url);
+      this.props.dispatch(addTracks(filtered));
+      this.props.history.push('/logged-in/player');
+    } catch (err) {
+      if (err.response.status === 401) {
+        // TODO prompt user that we are going thru login.
+
+        // clear redux properties and clear localstorage so that we don't try to read
+        // accessToken. If the app reads a value in accessToken, it assumes validity.
+        // perhaps putting a TTL is good
+        this.props.dispatch(addTracks(null));
+        this.props.dispatch(addAccessToken(null));
+        this.props.history.push('/');
+      }
+    }
 
   }
 
