@@ -62,34 +62,23 @@ class Search extends React.Component {
       return;
     }
 
-    if (this.state.searchValue === '') {
+    const search = this.state.searchValue;
+    let response;
+
+    if (search === '') {
       this.setState({errorMessage: 'Oops! Looks like there wasn\'t any search terms.'});
       return;
     }
 
     try {
-      const search = this.state.searchValue;
       const headers = {Authorization: `Bearer ${this.props.appStore.accessToken}`};
-      const response = await axios.get(`https://api.spotify.com/v1/search`
+      response = await axios.get(`https://api.spotify.com/v1/search`
                        + `?q=${search}`
                        + `&type=track`
                        + `&limit=50`,
                        {headers})
-      console.log(response);
-      if (response.data.tracks.items.length === 0) {
-        this.setState({
-          errorMessage: `Looks like your search "${this.state.searchValue}" `
-                        + `didn't return any tracks. Try another search term`
-        });
-        return;
-      }
-      const filtered = response.data.tracks.items.filter((item) => item.preview_url);
-      this.props.dispatch(addTracks(filtered));
-      this.props.history.push('/logged-in/player');
     } catch (err) {
       if (err.response.status === 401) {
-        // TODO prompt user that we are going thru login.
-
         // clear redux properties and clear localstorage so that we don't try to read
         // accessToken. If the app reads a value in accessToken, it assumes validity.
         // perhaps putting a TTL is good
@@ -99,6 +88,16 @@ class Search extends React.Component {
       }
     }
 
+    if (response.data.tracks.items.length === 0) {
+      this.setState({
+        errorMessage: `Looks like your search "${this.state.searchValue}" `
+                      + `didn't return any tracks. Try another search term`
+      });
+      return;
+    }
+    const filtered = response.data.tracks.items.filter((item) => item.preview_url);
+    this.props.dispatch(addTracks(filtered));
+    this.props.history.push('/logged-in/player');
   }
 
   render() {
