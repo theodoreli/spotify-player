@@ -44,20 +44,24 @@ const sheet = {
 };
 
 class Player extends React.Component {
-  state = {
-    trackIndex: 0,
-    isPaused: false,
-    audioCurrentTime: 0,
-    audioDuration: 100,
+  constructor(props) {
+    super(props);
+    this.audio = React.createRef();
+    this.state = {
+      trackIndex: 0,
+      isPaused: false,
+      audioCurrentTime: 0,
+      audioDuration: 100,
+    };
   }
 
   componentDidMount() {
-    this.audio = React.createRef();
-
     this.audioMetaInterval = setInterval(() => {
+        console.log(this.audio.current)
+        console.log(this.audio)
       this.setState({
-        audioCurrentTime: this.audio.current.currentTime,
-        audioDuration: this.audio.current.duration,
+        audioCurrentTime: this.audio.current.currentTime || 0,
+        audioDuration: this.audio.current.duration || 100,
       });
     }, 200)
   }
@@ -143,7 +147,7 @@ class Player extends React.Component {
           <IconButton aria-label="Previous">
             <SkipPreviousIcon onClick={this.handlePrev} />
           </IconButton>
-          <IconButton aria-label="Play/pause">
+          <IconButton aria-label="Play/Pause">
             { !this.state.isPaused ? <PauseIcon onClick={this.handlePause} />
                                    : <PlayArrowIcon onClick={this.handlePlay} className={tp.classes.playIcon} /> }
           </IconButton>
