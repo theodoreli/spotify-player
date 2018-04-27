@@ -11,7 +11,6 @@ const root = `
   width: 980px;
 `;
 
-
 const sheet = {
   root,
 };
@@ -47,11 +46,9 @@ class Entry extends Component {
           queryParams = queryParams.slice(1);
         }
         const parsed = querystring.parse(queryParams);
-        console.log(parsed);
         const accessToken = parsed.access_token;
         const error = parsed.error;
         const ttlSeconds = parsed.expires_in;
-          console.log(ttlSeconds);
 
         if (error) {
           // notify user that need to retry

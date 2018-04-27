@@ -79,9 +79,9 @@ class Search extends React.Component {
                        {headers})
     } catch (err) {
       if (err.response.status === 401) {
-        // clear redux properties and clear localstorage so that we don't try to read
-        // accessToken. If the app reads a value in accessToken, it assumes validity.
-        // perhaps putting a TTL is good
+        /* If we are unauthorized, get the user to login again. It is likely that their
+         * token has expired.
+         */
         this.props.dispatch(addTracks(null));
         this.props.dispatch(addAccessToken(null));
         this.props.history.push('/');
