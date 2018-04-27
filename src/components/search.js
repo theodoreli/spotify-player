@@ -47,11 +47,6 @@ class Search extends React.Component {
     searchValue: '',
     errorMessage: '',
   }
-  componentDidMount() {
-    console.log(this.props)
-    // if any of the searches fail, clear the storage, send them back to entry.
-
-  }
 
   handleChange = (ev) => {
     this.setState({searchValue: ev.target.value});
@@ -77,7 +72,6 @@ class Search extends React.Component {
                          + `&limit=50`,
                          {headers})
         console.log(response);
-        // TODO: add response handler for unauthorized. means we need to login again
         if (response.data.tracks.items.length === 0) {
           this.setState({
             errorMessage: `Looks like your search "${this.state.searchValue}" `
@@ -105,30 +99,25 @@ class Search extends React.Component {
   }
 
   render() {
-    const tp = this.props;
-    const helper = () => (
-      <React.Fragment>
-        helper
-      </React.Fragment>
-    );
+    const { classes } = this.props;
 
     return (
-      <div className={tp.classes.root}>
-        <CardMedia image={speaker} className={tp.classes.cover}>
+      <div className={classes.root}>
+        <CardMedia image={speaker} className={classes.cover}>
         </CardMedia>
-        <CardContent className={tp.classes.control}>
+        <CardContent className={classes.control}>
           <TextField
            id="search"
            label="Search by song"
            type="search"
-           className={tp.classes.searchBar}
+           className={classes.searchBar}
            margin="normal"
            onChange={this.handleChange}
            onKeyUp={this.handleKeyUp}
            value={this.state.searchValue}
-           FormHelperTextProps={{className: tp.classes.errorMessage}}
+           FormHelperTextProps={{className: classes.errorMessage}}
            helperText={this.state.errorMessage}
-           />
+          />
         </CardContent>
       </div>
     )
