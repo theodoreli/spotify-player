@@ -43,8 +43,21 @@ const tracks = (state = [], action) => {
   }
 };
 
+const errorMessageQuery = (state = [], action) => {
+  switch (action.type) {
+    case 'ADD_ERROR_MESSAGE_QUERY':
+      state = action.value;
+      return state;
+
+    default:
+      return state;
+  }
+};
+
+// todo: rename to root reducer
 const data = combineReducers({
   accessToken,
+  errorMessageQuery,
   ttl,
   tracks,
 });

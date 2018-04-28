@@ -7,6 +7,7 @@ import Card, { CardContent, CardMedia } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 
 import { addAccessToken, addTracks, fetchTracks } from '../actions';
+import { getErrorMessageQuery } from '../selectors';
 import speaker from '../img/speaker.jpg';
 import { control } from '../shared-styles/';
 
@@ -62,31 +63,15 @@ class Search extends React.Component {
       return;
     }
 
-    const search = this.state.searchValue;
+    const { searchValue } = this.state;
+    const response = this.props.fetchTracks(searchValue);
 
-      // move to action
-    if (search === '') {
-      this.setState({errorMessage: 'Oops! Looks like there wasn\'t any search terms.'});
-      return;
-    }
-
-    const response = this.props.fetchTracks(search);
-
-    if (response.data.tracks.items.length === 0) {
-      this.setState({
-        errorMessage: `Looks like your search "${this.state.searchValue}" `
-                      + `didn't return any tracks. Try another search term`
-      });
-      return;
-    }
-
-    const filtered = response.data.tracks.items.filter((item) => item.preview_url);
-    this.props.dispatch(addTracks(filtered));
-    this.props.history.push('/logged-in/player');
+    //this.props.history.push('/logged-in/player');
   }
+  //onUnmount, remove errorMessage by dispatching ''
 
   render() {
-    const { classes } = this.props;
+    const { classes, errorMessageQuery } = this.props;
 
     return (
       <div className={classes.root}>
@@ -103,7 +88,7 @@ class Search extends React.Component {
            onKeyUp={this.handleKeyUp}
            value={this.state.searchValue}
            FormHelperTextProps={{className: classes.errorMessage}}
-           helperText={this.state.errorMessage}
+           helperText={errorMessageQuery}
           />
         </CardContent>
       </div>
@@ -112,10 +97,13 @@ class Search extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return {appStore: state}
-}
+  return {
+    errorMessageQuery: getErrorMessageQuery(state)
+  }
+};
+
 const connected = connect(mapStateToProps, {
   fetchTracks
 })(Search);
-export default injectSheet(sheet)(connected);
 
+export default injectSheet(sheet)(connected);
