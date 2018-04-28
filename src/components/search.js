@@ -6,7 +6,7 @@ import { Route, Redirect } from 'react-router';
 import Card, { CardContent, CardMedia } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 
-import { addAccessToken, addTracks } from '../actions';
+import { addAccessToken, addTracks, fetchTracks } from '../actions';
 import speaker from '../img/speaker.jpg';
 import { control } from '../shared-styles/';
 
@@ -63,30 +63,14 @@ class Search extends React.Component {
     }
 
     const search = this.state.searchValue;
-    let response;
 
+      // move to action
     if (search === '') {
       this.setState({errorMessage: 'Oops! Looks like there wasn\'t any search terms.'});
       return;
     }
 
-    try {
-      const headers = {Authorization: `Bearer ${this.props.appStore.accessToken}`};
-      response = await axios.get(`https://api.spotify.com/v1/search`
-                       + `?q=${search}`
-                       + `&type=track`
-                       + `&limit=50`,
-                       {headers})
-    } catch (err) {
-      if (err.response.status === 401) {
-        /* If we are unauthorized, get the user to login again. It is likely that their
-         * token has expired.
-         */
-        this.props.dispatch(addTracks(null));
-        this.props.dispatch(addAccessToken(null));
-        this.props.history.push('/');
-      }
-    }
+    const response = this.props.fetchTracks(search);
 
     if (response.data.tracks.items.length === 0) {
       this.setState({
@@ -95,6 +79,7 @@ class Search extends React.Component {
       });
       return;
     }
+
     const filtered = response.data.tracks.items.filter((item) => item.preview_url);
     this.props.dispatch(addTracks(filtered));
     this.props.history.push('/logged-in/player');
@@ -129,6 +114,8 @@ class Search extends React.Component {
 function mapStateToProps(state) {
   return {appStore: state}
 }
-const connected = connect(mapStateToProps)(Search);
+const connected = connect(mapStateToProps, {
+  fetchTracks
+})(Search);
 export default injectSheet(sheet)(connected);
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk'
 
 import displayIssues from './reducers';
 import App from './containers/app.js';
@@ -28,7 +29,11 @@ const saveState = (state) => {
   }
 };
 
-const store = createStore(displayIssues, loadState());
+const store = createStore(
+  displayIssues,
+  loadState(),
+  applyMiddleware(thunk)
+);
 
 store.subscribe(() => {
   saveState(store.getState());
