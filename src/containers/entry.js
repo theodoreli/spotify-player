@@ -6,6 +6,7 @@ import injectSheet from 'react-jss';
 import querystring from 'querystring';
 
 import { fetchAccessToken } from '../actions/';
+import { getAccessToken } from '../selectors/';
 import {
   AUTH_REDIRECT_BASE_URL,
   AUTH_QUERY_PARAMS } from '../constants/apiConstants.js';
@@ -30,7 +31,7 @@ class Entry extends Component {
   }
 
   _isUserLoggedIn() {
-    if (this.props.appStore.app.accessToken) {
+    if (this.props.accessToken) {
       return true;
     }
 
@@ -65,7 +66,7 @@ class Entry extends Component {
 }
 
 function mapStateToProps(state) {
-  return {appStore: state}
+  return {accessToken: getAccessToken(state)}
 }
 const connected = connect(mapStateToProps, {
   fetchAccessToken

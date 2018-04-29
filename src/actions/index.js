@@ -3,6 +3,7 @@ import { push } from 'react-router-redux';
 import querystring from 'querystring';
 
 import * as types from '../constants/actionTypes.js';
+import { getAccessToken } from '../selectors';
 
 export const addTracks = value => ({
   type: types.FETCH_TRACKS,
@@ -50,8 +51,7 @@ export const fetchTracks = query => async (dispatch, getState) => {
     return;
   }
 
-  const state = getState();
-  const { accessToken } = getState().app;
+  const accessToken = getAccessToken(getState());
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
