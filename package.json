@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/icons": "^1.0.0-beta.43",
     "axios": "^0.18.0",
+    "history": "^4.7.2",
     "jss": "^9.8.1",
     "material-ui": "^1.0.0-beta.42",
     "prop-types": "^15.6.1",
@@ -13,6 +14,7 @@
     "react-jss": "^8.4.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "react-router-redux": "^5.0.0-alpha.9",
     "react-scripts": "1.1.4",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0"

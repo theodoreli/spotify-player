@@ -30,9 +30,7 @@ class App extends Component {
   render() {
     return (
       <JssProvider>
-        <Router>
           { routes }
-        </Router>
       </JssProvider>
     )
   }

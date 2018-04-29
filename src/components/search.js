@@ -6,7 +6,11 @@ import { Route, Redirect } from 'react-router';
 import Card, { CardContent, CardMedia } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 
-import { addAccessToken, addTracks, fetchTracks } from '../actions';
+import {
+  addAccessToken,
+  addTracks,
+  addErrorMessageQuery,
+  fetchTracks } from '../actions';
 import { getErrorMessageQuery } from '../selectors';
 import speaker from '../img/speaker.jpg';
 import { control } from '../shared-styles/';
@@ -64,11 +68,12 @@ class Search extends React.Component {
     }
 
     const { searchValue } = this.state;
-    const response = this.props.fetchTracks(searchValue);
-
-    //this.props.history.push('/logged-in/player');
+    this.props.fetchTracks(searchValue);
   }
-  //onUnmount, remove errorMessage by dispatching ''
+
+  componentWillUnmount() {
+    this.props.addErrorMessageQuery('');
+  }
 
   render() {
     const { classes, errorMessageQuery } = this.props;
@@ -103,7 +108,8 @@ function mapStateToProps(state) {
 };
 
 const connected = connect(mapStateToProps, {
-  fetchTracks
+  fetchTracks,
+  addErrorMessageQuery,
 })(Search);
 
 export default injectSheet(sheet)(connected);

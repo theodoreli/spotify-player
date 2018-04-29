@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { routerReducer} from 'react-router-redux'
 
 /*
  * TODO: remove this note and place it  neatly in a readme
@@ -55,11 +56,12 @@ const errorMessageQuery = (state = [], action) => {
 };
 
 // todo: rename to root reducer
-const data = combineReducers({
+const rootReducer = combineReducers({
   accessToken,
   errorMessageQuery,
   ttl,
   tracks,
+  router: routerReducer,
 });
 
-export default data;
+export default rootReducer;

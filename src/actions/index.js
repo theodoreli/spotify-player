@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { push } from 'react-router-redux';
 
 export const addAccessToken = token => ({
   type: 'ADD_ACCESS_TOKEN',
@@ -28,6 +29,7 @@ export const fetchTracks = query => async (dispatch, getState) => {
     return;
   }
 
+  const state = getState();
   const { accessToken } = getState();
   const headers = {
     Authorization: `Bearer ${accessToken}`
@@ -47,7 +49,7 @@ export const fetchTracks = query => async (dispatch, getState) => {
        */
       dispatch(addTracks(null));
       dispatch(addAccessToken(null));
-      this.props.history.push('/');
+      dispatch(push('/'))
     }
   }
 
@@ -60,5 +62,7 @@ export const fetchTracks = query => async (dispatch, getState) => {
 
   // Only return the tracks that have a previewable song track
   const filtered = response.data.tracks.items.filter((item) => item.preview_url);
+
   dispatch(addTracks(filtered));
+  dispatch(push('/logged-in/player'));
 };

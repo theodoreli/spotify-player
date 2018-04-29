@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
+import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import { ConnectedRouter, routerMiddleware, push } from 'react-router-redux'
 import thunk from 'redux-thunk'
+import createHistory from 'history/createBrowserHistory'
 
-import displayIssues from './reducers';
+import rootReducer from './reducers';
 import App from './containers/app.js';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -29,15 +31,24 @@ const saveState = (state) => {
   }
 };
 
+const history = createHistory()
+const middleware = routerMiddleware(history)
+
 const store = createStore(
-  displayIssues,
+  rootReducer,
   loadState(),
-  applyMiddleware(thunk)
+  applyMiddleware(thunk, middleware)
 );
 
 store.subscribe(() => {
   saveState(store.getState());
 });
 
-ReactDOM.render((<Provider store={store}><App/></Provider>), document.getElementById('root'));
+ReactDOM.render(
+  (<Provider store={store}>
+     <ConnectedRouter history={history}>
+       <App/>
+     </ConnectedRouter>
+   </Provider>),
+  document.getElementById('root'));
 registerServiceWorker();
