@@ -2,15 +2,6 @@ import { combineReducers } from 'redux';
 import { routerReducer} from 'react-router-redux';
 import * as types from '../constants/actionTypes.js';
 
-/*
- * TODO: remove this note and place it  neatly in a readme
- * Do NOT have state as an object as it presents future problems
- * - componentDidUpdate will not be able to detect changes
- * - there is an additional object in the hiearchy after doing combineReducers
- *
- * eg this is bad:
- * const filterAuthor = (state = {filterReporter: ''}, action) => {
- */
 const initialState = {
   accessToken: '',
   tracks: [],
