@@ -20,16 +20,12 @@ export const setAccessToken = value => ({
 });
 
 export const fetchAccessToken = query => (dispatch, getState) => {
-
-  // Spotfy places the access token as a query param.
+  /*
+   * Spotfy places the access token as a query param.
+   */
   const href = window.location.href;
   let queryParams = href.split('?', 2)[1] || href.split('#', 2)[1];
   if (!queryParams) return false
-
-  // TODO: see if we need this still
-  if (queryParams[0] === '?') {
-    queryParams = queryParams.slice(1);
-  }
 
   const parsed = querystring.parse(queryParams);
   const accessToken = parsed.access_token;
@@ -40,7 +36,6 @@ export const fetchAccessToken = query => (dispatch, getState) => {
   }
 
   if (accessToken) {
-    // fiddle with access token.
     dispatch(setAccessToken(accessToken));
     return true;
   } else {

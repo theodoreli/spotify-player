@@ -47,7 +47,6 @@ class Entry extends Component {
 
   render() {
     const tp = this.props;
-      debugger;
     const renderWelcome = () => (
       <div className={tp.classes.root}>
         Welcome! Will redirect you in a moment if you need to login
