@@ -26,19 +26,19 @@ class Entry extends Component {
     };
     this.redirectUrl = AUTH_REDIRECT_BASE_URL
                          + querystring.stringify(AUTH_QUERY_PARAMS);
+    this._isUserLoggedIn = this._isUserLoggedIn.bind(this);
+  }
+
+  _isUserLoggedIn() {
+    if (this.props.appStore.app.accessToken) {
+      return true;
+    }
+
+    return this.props.fetchAccessToken();
   }
 
   componentDidMount() {
-
-    const isUserLoggedIn = () => {
-      if (this.props.appStore.app.accessToken) {
-        return true;
-      }
-
-      return this.props.fetchAccessToken();
-    }
-
-    const isLoggedIn = isUserLoggedIn();
+    const isLoggedIn = this._isUserLoggedIn();
     const timeout = isLoggedIn ? 0: 2000;
     setTimeout(() => {
       this.setState({isUserLoggedIn: isLoggedIn});
