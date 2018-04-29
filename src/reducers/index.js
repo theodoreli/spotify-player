@@ -10,7 +10,7 @@ const initialState = {
 
 const app = (state = initialState, action) => {
   switch (action.type) {
-    case types.FETCH_ACCESS_TOKEN:
+    case types.SET_ACCESS_TOKEN:
       return {
         ...state,
         accessToken: action.value

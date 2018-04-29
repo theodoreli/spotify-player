@@ -1,12 +1,8 @@
 import axios from 'axios';
 import { push } from 'react-router-redux';
+import querystring from 'querystring';
 
 import * as types from '../constants/actionTypes.js';
-
-export const addAccessToken = value => ({
-  type: types.FETCH_ACCESS_TOKEN,
-  value
-});
 
 export const addTracks = value => ({
   type: types.FETCH_TRACKS,
@@ -18,8 +14,41 @@ export const addErrorMessageQuery = value => ({
   value
 });
 
+export const setAccessToken = value => ({
+  type: types.SET_ACCESS_TOKEN,
+  value
+});
+
+export const fetchAccessToken = query => (dispatch, getState) => {
+
+  // Spotfy places the access token as a query param.
+  const href = window.location.href;
+  let queryParams = href.split('?', 2)[1] || href.split('#', 2)[1];
+  if (!queryParams) return false
+
+  // TODO: see if we need this still
+  if (queryParams[0] === '?') {
+    queryParams = queryParams.slice(1);
+  }
+
+  const parsed = querystring.parse(queryParams);
+  const accessToken = parsed.access_token;
+
+  if (parsed.error) {
+    // notify user that need to retry
+    return false;
+  }
+
+  if (accessToken) {
+    // fiddle with access token.
+    dispatch(setAccessToken(accessToken));
+    return true;
+  } else {
+    return false
+  }
+};
+
 export const fetchTracks = query => async (dispatch, getState) => {
-    debugger;
   if (query === '') {
     const msg = 'Oops! Looks like there wasn\'t any search terms.';
     dispatch(addErrorMessageQuery(msg));
@@ -27,7 +56,6 @@ export const fetchTracks = query => async (dispatch, getState) => {
   }
 
   const state = getState();
-    console.log(state)
   const { accessToken } = getState().app;
   const headers = {
     Authorization: `Bearer ${accessToken}`
@@ -46,7 +74,7 @@ export const fetchTracks = query => async (dispatch, getState) => {
        * token has expired.
        */
       dispatch(addTracks(null));
-      dispatch(addAccessToken(null));
+      dispatch(setAccessToken(null));
       dispatch(push('/'))
     }
   }

@@ -5,7 +5,7 @@ import { Redirect } from 'react-router';
 import injectSheet from 'react-jss';
 import querystring from 'querystring';
 
-import { addAccessToken, addTTL } from '../actions/';
+import { fetchAccessToken } from '../actions/';
 
 const root = `
   width: 980px;
@@ -28,48 +28,14 @@ class Entry extends Component {
   }
 
   componentDidMount() {
-    // lets try and have this declarative. so create a flow: is logged in?
-    // can achieve this with router props or just use logic here.
-
     this.redirectUrl += querystring.stringify(this.queryParams)
-    const isUserLoggedIn = () => {
-      console.log(this.props);
 
+    const isUserLoggedIn = () => {
       if (this.props.appStore.app.accessToken) {
         return true;
       }
 
-      const href = window.location.href;
-      let queryParams = href.split('?', 2)[1] || href.split('#', 2)[1];
-      if (queryParams) {
-        if (queryParams[0] === '?') {
-          queryParams = queryParams.slice(1);
-        }
-        const parsed = querystring.parse(queryParams);
-        const accessToken = parsed.access_token;
-        const error = parsed.error;
-        const ttlSeconds = parsed.expires_in;
-
-        if (error) {
-          // notify user that need to retry
-          return false;
-        }
-
-        if (accessToken) {
-          // fiddle with access token.
-          // TODO: Use middleware to save to cookies
-          this.props.dispatch(addAccessToken(accessToken));
-          //this.props.dispatch(addTTL(ttlSeconds));
-          // put acccess token in redux store. Need to see if this is safe.
-          return true;
-
-        } else {return false}
-
-        // do ajax request. if works, push login
-        // attempt to login. if succesful, push to loggedin page
-      }
-
-      return false;
+      return this.props.fetchAccessToken();
     }
 
     const isLoggedIn = isUserLoggedIn();
@@ -102,5 +68,7 @@ class Entry extends Component {
 function mapStateToProps(state) {
   return {appStore: state}
 }
-const connected = connect(mapStateToProps)(Entry);
+const connected = connect(mapStateToProps, {
+  fetchAccessToken
+})(Entry);
 export default injectSheet(sheet)(connected);
