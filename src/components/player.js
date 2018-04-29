@@ -69,8 +69,7 @@ class Player extends React.Component {
   }
 
   handleBack = () => {
-    //this.props.history.push('/search')
-        this.props.dispatch(push('/search/'))
+    this.props.dispatch(push('/search/'));
   }
 
   handlePause = () => {
@@ -86,7 +85,7 @@ class Player extends React.Component {
   handleNext = () => {
     if (this.state.trackIndex + 1 >= this.props.appStore.tracks.length) {
       // TODO: implement a popup that says we have exhausted all previewable tracks
-      this.props.history.push('/search')
+      this.props.dispatch(push('/search'));
       return;
     }
 
@@ -94,7 +93,7 @@ class Player extends React.Component {
   }
 
   handlePrev = () => {
-    const trackIndex = this.state.trackIndex;
+    const { trackIndex } = this.state;
     if (trackIndex === 0 ) {
       this.setState({trackIndex: 0})
     } else {
