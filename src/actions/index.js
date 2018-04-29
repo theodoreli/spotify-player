@@ -1,28 +1,25 @@
 import axios from 'axios';
 import { push } from 'react-router-redux';
 
-export const addAccessToken = token => ({
-  type: 'ADD_ACCESS_TOKEN',
-  token
-});
+import * as types from '../constants/actionTypes.js';
 
-export const addTTL = value => ({
-  type: 'ADD_TTL',
+export const addAccessToken = value => ({
+  type: types.FETCH_ACCESS_TOKEN,
   value
 });
 
 export const addTracks = value => ({
-  type: 'ADD_TRACKS',
+  type: types.FETCH_TRACKS,
   value
 });
 
 export const addErrorMessageQuery = value => ({
-  type: 'ADD_ERROR_MESSAGE_QUERY',
+  type: types.SET_ERROR_MESSAGE_QUERY,
   value
 });
 
-
 export const fetchTracks = query => async (dispatch, getState) => {
+    debugger;
   if (query === '') {
     const msg = 'Oops! Looks like there wasn\'t any search terms.';
     dispatch(addErrorMessageQuery(msg));
@@ -30,7 +27,8 @@ export const fetchTracks = query => async (dispatch, getState) => {
   }
 
   const state = getState();
-  const { accessToken } = getState();
+    console.log(state)
+  const { accessToken } = getState().app;
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
@@ -69,3 +67,4 @@ export const fetchTracks = query => async (dispatch, getState) => {
   dispatch(push('/player/'));
   dispatch(push('/player/'));
 };
+

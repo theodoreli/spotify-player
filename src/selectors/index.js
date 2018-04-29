@@ -1,1 +1,1 @@
-export const getErrorMessageQuery = state => state.errorMessageQuery;
+export const getErrorMessageQuery = state => state.app.errorMessageQuery;

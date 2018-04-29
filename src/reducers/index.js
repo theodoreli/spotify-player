@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
-import { routerReducer} from 'react-router-redux'
+import { routerReducer} from 'react-router-redux';
+import * as types from '../constants/actionTypes.js';
 
 /*
  * TODO: remove this note and place it  neatly in a readme
@@ -10,57 +11,39 @@ import { routerReducer} from 'react-router-redux'
  * eg this is bad:
  * const filterAuthor = (state = {filterReporter: ''}, action) => {
  */
+const initialState = {
+  accessToken: '',
+  tracks: [],
+  errorMessageQuery: '',
+};
 
-const accessToken = (state = '', action) => {
+const app = (state = initialState, action) => {
   switch (action.type) {
-    case 'ADD_ACCESS_TOKEN':
-      state = action.token;
-      return state;
+    case types.FETCH_ACCESS_TOKEN:
+      return {
+        ...state,
+        accessToken: action.value
+      };
+
+    case types.FETCH_TRACKS:
+      return {
+        ...state,
+        tracks: action.value
+      };
+
+    case types.SET_ERROR_MESSAGE_QUERY:
+      return {
+        ...state,
+        errorMessageQuery: action.value
+      };
 
     default:
       return state;
   }
 };
 
-const ttl = (state = '', action) => {
-  switch (action.type) {
-    case 'ADD_TTL':
-      state = action.value;
-      return state;
-
-    default:
-      return state;
-  }
-};
-
-const tracks = (state = [], action) => {
-  switch (action.type) {
-    case 'ADD_TRACKS':
-      state = action.value;
-      return state;
-
-    default:
-      return state;
-  }
-};
-
-const errorMessageQuery = (state = [], action) => {
-  switch (action.type) {
-    case 'ADD_ERROR_MESSAGE_QUERY':
-      state = action.value;
-      return state;
-
-    default:
-      return state;
-  }
-};
-
-// todo: rename to root reducer
 const rootReducer = combineReducers({
-  accessToken,
-  errorMessageQuery,
-  ttl,
-  tracks,
+  app,
   router: routerReducer,
 });
 

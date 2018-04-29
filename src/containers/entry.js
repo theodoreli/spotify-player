@@ -35,7 +35,7 @@ class Entry extends Component {
     const isUserLoggedIn = () => {
       console.log(this.props);
 
-      if (this.props.appStore.accessToken) {
+      if (this.props.appStore.app.accessToken) {
         return true;
       }
 
@@ -59,9 +59,8 @@ class Entry extends Component {
           // fiddle with access token.
           // TODO: Use middleware to save to cookies
           this.props.dispatch(addAccessToken(accessToken));
-          this.props.dispatch(addTTL(ttlSeconds));
+          //this.props.dispatch(addTTL(ttlSeconds));
           // put acccess token in redux store. Need to see if this is safe.
-          // then proceed to login page.
           return true;
 
         } else {return false}
@@ -80,12 +79,9 @@ class Entry extends Component {
     }, timeout);
   }
 
-  // TODO: use static getDerivedStateFromProps() in the future
-  componentWillReceiveProps(nextProps) {
-  }
-
   render() {
     const tp = this.props;
+      debugger;
     const renderWelcome = () => (
       <div className={tp.classes.root}>
         Welcome! Will redirect you in a moment if you need to login

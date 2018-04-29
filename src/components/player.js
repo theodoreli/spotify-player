@@ -83,7 +83,7 @@ class Player extends React.Component {
   }
 
   handleNext = () => {
-    if (this.state.trackIndex + 1 >= this.props.appStore.tracks.length) {
+    if (this.state.trackIndex + 1 >= this.props.state.app.tracks.length) {
       // TODO: implement a popup that says we have exhausted all previewable tracks
       this.props.dispatch(push('/search'));
       return;
@@ -117,7 +117,7 @@ class Player extends React.Component {
   render() {
     const tp = this.props;
     const trackIndex = this.state.trackIndex;
-    const track = tp.appStore.tracks[trackIndex];
+    const track = tp.state.app.tracks[trackIndex];
     const audioSrc = track.preview_url;
 
     const trackCoverProps = {
@@ -159,7 +159,7 @@ class Player extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return {appStore: state}
+  return {state}
 }
 
 const connected = connect(mapStateToProps)(Player);
