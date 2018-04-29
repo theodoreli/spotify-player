@@ -13,7 +13,7 @@ import {
   addErrorMessageQuery,
   fetchTracks } from '../actions';
 import { getErrorMessageQuery } from '../selectors';
-import speaker from '../img/speaker.jpg';
+import speaker from '../imgs/speaker.jpg';
 import { control } from '../shared-styles/';
 
 const root = `
