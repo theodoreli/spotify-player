@@ -6,6 +6,9 @@ import injectSheet from 'react-jss';
 import querystring from 'querystring';
 
 import { fetchAccessToken } from '../actions/';
+import {
+  AUTH_REDIRECT_BASE_URL,
+  AUTH_QUERY_PARAMS } from '../constants/apiConstants.js';
 
 const root = `
   width: 980px;
@@ -16,19 +19,16 @@ const sheet = {
 };
 
 class Entry extends Component {
-  state = {
-    isUserLoggedIn: null,
-  }
-
-  redirectUrl = `https://accounts.spotify.com/authorize?`;
-  queryParams = {
-    client_id: 'b0a17325663147199c8e921ffb85d000',
-    response_type: 'token',
-    redirect_uri: 'https://localhost:3000',
+  constructor(props) {
+    super(props);
+    this.state = {
+      isUserLoggedIn: null,
+    };
+    this.redirectUrl = AUTH_REDIRECT_BASE_URL
+                         + querystring.stringify(AUTH_QUERY_PARAMS);
   }
 
   componentDidMount() {
-    this.redirectUrl += querystring.stringify(this.queryParams)
 
     const isUserLoggedIn = () => {
       if (this.props.appStore.app.accessToken) {
