@@ -11,6 +11,7 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import Typography from 'material-ui/Typography';
+import { push } from 'react-router-redux';
 
 import { addTracks } from '../actions';
 import { control } from '../shared-styles/';
@@ -27,8 +28,7 @@ const root = `
 `;
 
 const card = `
-  width: 700px;
-  height: 1200px;
+  width: 300px;
 `;
 
 const cover = `
@@ -69,7 +69,8 @@ class Player extends React.Component {
   }
 
   handleBack = () => {
-    this.props.history.push('/logged-in/search')
+    //this.props.history.push('/search')
+        this.props.dispatch(push('/search/'))
   }
 
   handlePause = () => {
@@ -85,7 +86,7 @@ class Player extends React.Component {
   handleNext = () => {
     if (this.state.trackIndex + 1 >= this.props.appStore.tracks.length) {
       // TODO: implement a popup that says we have exhausted all previewable tracks
-      this.props.history.push('/logged-in/search')
+      this.props.history.push('/search')
       return;
     }
 
@@ -133,24 +134,26 @@ class Player extends React.Component {
 
     return (
       <div className={tp.classes.root}>
-        <audio src={audioSrc} autoPlay onEnd ref={this.audio} />
-        <TrackCover {...trackCoverProps} />
-        <ProgressBar {...progressBarProps} />
-        <CardContent className={tp.classes.control}>
-          <IconButton aria-label="Back">
-            <ArrowBack onClick={this.handleBack} />
-          </IconButton>
-          <IconButton aria-label="Previous">
-            <SkipPreviousIcon onClick={this.handlePrev} />
-          </IconButton>
-          <IconButton aria-label="Play/Pause">
-            { !this.state.isPaused ? <PauseIcon onClick={this.handlePause} />
-                                   : <PlayArrowIcon onClick={this.handlePlay} className={tp.classes.playIcon} /> }
-          </IconButton>
-          <IconButton aria-label="Next">
-            <SkipNextIcon onClick={this.handleNext}/>
-          </IconButton>
-        </CardContent>
+        <Card className={tp.classes.card}>
+          <audio src={audioSrc} autoPlay ref={this.audio} />
+          <TrackCover {...trackCoverProps} />
+          <ProgressBar {...progressBarProps} />
+          <CardContent className={tp.classes.control}>
+            <IconButton aria-label="Back">
+              <ArrowBack onClick={this.handleBack} />
+            </IconButton>
+            <IconButton aria-label="Previous">
+              <SkipPreviousIcon onClick={this.handlePrev} />
+            </IconButton>
+            <IconButton aria-label="Play/Pause">
+              { !this.state.isPaused ? <PauseIcon onClick={this.handlePause} />
+                                     : <PlayArrowIcon onClick={this.handlePlay} className={tp.classes.playIcon} /> }
+            </IconButton>
+            <IconButton aria-label="Next">
+              <SkipNextIcon onClick={this.handleNext}/>
+            </IconButton>
+          </CardContent>
+        </Card>
       </div>
     )
   }
@@ -159,6 +162,6 @@ class Player extends React.Component {
 function mapStateToProps(state) {
   return {appStore: state}
 }
+
 const connected = connect(mapStateToProps)(Player);
 export default injectSheet(sheet)(connected);
-

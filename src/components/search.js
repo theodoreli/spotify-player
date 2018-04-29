@@ -5,6 +5,7 @@ import injectSheet from 'react-jss';
 import { Route, Redirect } from 'react-router';
 import Card, { CardContent, CardMedia } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
+import { push } from 'react-router-redux';
 
 import {
   addAccessToken,
@@ -24,6 +25,10 @@ const root = `
   align-items: center;
 `;
 
+const card = `
+  width: 300px;
+`;
+
 const cover = `
   width: 300px;
   height: 300px;
@@ -40,6 +45,7 @@ const searchBar = `
 `;
 
 const sheet = {
+  card,
   cover,
   control,
   errorMessage,
@@ -52,9 +58,10 @@ class Search extends React.Component {
     super(props);
     this.state = {
       searchValue: '',
-      errorMessage: '',
     };
 
+    // So that on page refresh, we don't have lingering error messages.
+    this.props.addErrorMessageQuery('');
     this.handleKeyUp = this.handleKeyUp.bind(this);
   }
 
@@ -80,22 +87,24 @@ class Search extends React.Component {
 
     return (
       <div className={classes.root}>
-        <CardMedia image={speaker} className={classes.cover}>
-        </CardMedia>
-        <CardContent className={classes.control}>
-          <TextField
-           id="search"
-           label="Search by song"
-           type="search"
-           className={classes.searchBar}
-           margin="normal"
-           onChange={this.handleChange}
-           onKeyUp={this.handleKeyUp}
-           value={this.state.searchValue}
-           FormHelperTextProps={{className: classes.errorMessage}}
-           helperText={errorMessageQuery}
-          />
-        </CardContent>
+        <Card className={classes.card}>
+          <CardMedia image={speaker} className={classes.cover}>
+          </CardMedia>
+          <CardContent className={classes.control}>
+            <TextField
+             id="search"
+             label="Search by song"
+             type="search"
+             className={classes.searchBar}
+             margin="normal"
+             onChange={this.handleChange}
+             onKeyUp={this.handleKeyUp}
+             value={this.state.searchValue}
+             FormHelperTextProps={{className: classes.errorMessage}}
+             helperText={errorMessageQuery}
+            />
+          </CardContent>
+        </Card>
       </div>
     )
   }

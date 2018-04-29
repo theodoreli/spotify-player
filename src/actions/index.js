@@ -64,5 +64,8 @@ export const fetchTracks = query => async (dispatch, getState) => {
   const filtered = response.data.tracks.items.filter((item) => item.preview_url);
 
   dispatch(addTracks(filtered));
-  dispatch(push('/logged-in/player'));
+
+  // XXX: Bandaid. Need to dispatch this twice otherwise we do not reroute
+  dispatch(push('/player/'));
+  dispatch(push('/player/'));
 };

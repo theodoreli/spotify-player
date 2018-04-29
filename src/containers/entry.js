@@ -96,7 +96,7 @@ class Entry extends Component {
       <div>
         { this.state.isUserLoggedIn === null ? renderWelcome()
           : this.state.isUserLoggedIn
-            ? (<Redirect push to="/logged-in"/>)
+            ? (<Redirect push to="/search"/>)
             : window.location.replace(this.redirectUrl) }
       </div>
     )

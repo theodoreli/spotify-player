@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { Switch , Redirect, Route } from 'react-router';
 import { connect } from 'react-redux';
 import injectSheet, {JssProvider} from 'react-jss';
 
-import routes from '../routes.js';
+import Entry from '../containers/entry.js';
+import Search from '../components/search.js';
+import Player from '../components/player.js';
 
 const sheet = {
   '@global': {
@@ -30,7 +33,12 @@ class App extends Component {
   render() {
     return (
       <JssProvider>
-          { routes }
+        <Switch>
+          <Route exact path="/" component={Entry}/>
+          <Route exact path="/search" component={Search}/>
+          <Route exact path="/player" component={Player}/>
+          <Redirect to="/" />
+        </Switch>
       </JssProvider>
     )
   }
