@@ -4,10 +4,10 @@ import { Switch , Redirect, Route, withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import injectSheet, {JssProvider} from 'react-jss';
 
-import Entry from '../containers/entry.js';
+import { loginIfNeeded, redirectToSpotifyLoginIfNeeded } from '../actions';
+import { ROUTING_BASE_PATH_MAPPED as basePath } from '../constants/envMappedConstants.js';
 import Search from '../components/search.js';
 import Player from '../components/player.js';
-import { ROUTING_BASE_PATH_MAPPED as basePath } from '../constants/envMappedConstants.js';
 
 const sheet = {
   '@global': {
@@ -32,13 +32,21 @@ const sheet = {
 
 class App extends Component {
   componentDidMount() {
+    this.props.loginIfNeeded();
   }
 
   render() {
+    const renderWelcome = () => (
+      <div>
+        Welcome! If you are not logged through Spotify, you will be redirected there.
+        Otherwise, you will be redirected to the song search page.
+      </div>
+    );
+
     return (
       <JssProvider>
         <Switch>
-          <Route exact path={`${basePath}`} component={Entry}/>
+          <Route exact path={`${basePath}`} render={renderWelcome}/>
           <Route exact path={`${basePath}search`} component={Search}/>
           <Route exact path={`${basePath}player`} component={Player}/>
           <Redirect to={`${basePath}`} />
@@ -51,6 +59,8 @@ function mapStateToProps(state) {
   return {allState: state}
 }
 
-const connected = connect(mapStateToProps)(App);
+const connected = connect(mapStateToProps, {
+  loginIfNeeded,
+})(App);
 const connectedWithRouter = withRouter(connected)
 export default injectSheet(sheet)(connectedWithRouter);

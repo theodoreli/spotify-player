@@ -4,7 +4,10 @@ import querystring from 'querystring';
 
 import * as types from '../constants/actionTypes.js';
 import * as apiConsts from '../constants/apiConstants.js';
-import { ROUTING_BASE_PATH_MAPPED as basePath } from '../constants/envMappedConstants.js';
+import {
+  ROUTING_BASE_PATH_MAPPED as basePath,
+  AUTH_QUERY_PARAMS_MAPPED as queryParams,
+} from '../constants/envMappedConstants.js';
 import { getAccessToken } from '../selectors';
 
 export const addTracks = value => ({
@@ -22,6 +25,63 @@ export const setAccessToken = value => ({
   value
 });
 
+const redirectToSpotifyLogin = () => {
+  const redirectUrl = apiConsts.AUTH_REDIRECT_BASE_URL +
+                       querystring.stringify(queryParams);
+  window.location.replace(redirectUrl);
+};
+
+export const redirectToSpotifyLoginIfNeeded = () => (dispatch, getState) => {
+  const href = window.location.href;
+  let queryParams = href.split('?', 2)[1] || href.split('#', 2)[1];
+  if (!queryParams) {
+    redirectToSpotifyLogin();
+  }
+
+  const parsed = querystring.parse(queryParams);
+  const accessToken = parsed.access_token;
+
+  if (parsed.error || !accessToken) {
+    redirectToSpotifyLogin();
+  } else {
+    dispatch(setAccessToken(accessToken));
+    dispatch(push(`${basePath}search`));
+  }
+
+};
+
+export const loginIfNeeded = () => async (dispatch, getState) => {
+  const state = getState();
+  const accessToken = getAccessToken(state);
+  const headers = {
+    Authorization: `Bearer ${accessToken}`
+  };
+
+  if (accessToken) {
+    try {
+      // If there exists an accessToken, test that it actually works.
+      await axios.get(`https://api.spotify.com/v1/search`
+                   + `?q=justin`
+                   + `&type=track`
+                   + `&limit=1`,
+                   {headers})
+      dispatch(push(`${basePath}search`));
+
+    } catch (err) {
+      if (err.response.status === 401) {
+        /* If we are unauthorized, get the user to login again. It is likely that their
+         * token has expired.
+         */
+        dispatch(addTracks(null));
+        dispatch(setAccessToken(null));
+        dispatch(redirectToSpotifyLoginIfNeeded());
+      }
+    }
+  } else {
+    dispatch(redirectToSpotifyLoginIfNeeded());
+  }
+
+};
 export const fetchAccessToken = query => (dispatch, getState) => {
   /*
    * Spotfy places the access token as a query param.
@@ -72,7 +132,8 @@ export const fetchTracks = query => async (dispatch, getState) => {
        */
       dispatch(addTracks(null));
       dispatch(setAccessToken(null));
-      dispatch(push(`${basePath}`))
+      //dispatch(push(`${basePath}`))
+      redirectToSpotifyLogin();
     }
   }
 
