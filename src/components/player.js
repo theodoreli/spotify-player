@@ -1,19 +1,15 @@
-import axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import injectSheet from 'react-jss';
-import { Route, Redirect } from 'react-router';
-import Card, { CardContent, CardMedia } from 'material-ui/Card';
+import Card, { CardContent } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
-import Typography from 'material-ui/Typography';
-import { push } from 'react-router-redux';
 
-import { addTracks } from '../actions';
 import { control } from '../shared-styles/';
 import TrackCover from '../components/trackCover.js';
 import ProgressBar from '../components/progressBar.js';

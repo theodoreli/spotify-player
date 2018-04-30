@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { Switch , Redirect, Route, withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import injectSheet, {JssProvider} from 'react-jss';
 
-import { loginIfNeeded, redirectToSpotifyLoginIfNeeded } from '../actions';
+import { loginIfNeeded } from '../actions';
 import { ROUTING_BASE_PATH_MAPPED as basePath } from '../constants/envMappedConstants.js';
 import Search from '../components/search.js';
 import Player from '../components/player.js';

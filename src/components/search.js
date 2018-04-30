@@ -1,15 +1,10 @@
-import axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
 import injectSheet from 'react-jss';
-import { Route, Redirect } from 'react-router';
 import Card, { CardContent, CardMedia } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
-import { push } from 'react-router-redux';
 
 import {
-  addAccessToken,
-  addTracks,
   addErrorMessageQuery,
   fetchTracks } from '../actions';
 import { getErrorMessageQuery } from '../selectors';
