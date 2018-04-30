@@ -7,7 +7,7 @@ import injectSheet, {JssProvider} from 'react-jss';
 import Entry from '../containers/entry.js';
 import Search from '../components/search.js';
 import Player from '../components/player.js';
-import { ENV_PROD } from '../constants/apiConstants.js';
+import { ROUTING_BASE_PATH_MAPPED as basePath } from '../constants/envMappedConstants.js';
 
 const sheet = {
   '@global': {
@@ -35,8 +35,6 @@ class App extends Component {
   }
 
   render() {
-    const basePath = process.env.NODE_ENV === ENV_PROD ?
-                       '/spotify-player/': '/';
     return (
       <JssProvider>
         <Switch>
