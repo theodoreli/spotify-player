@@ -3,7 +3,7 @@
 cd $(dirname $0)
 set -e
 
-local GIT_POINTER=${1:-master}
+GIT_POINTER=${1:-master}
 
 pushd ..
 git checkout gh-pages
