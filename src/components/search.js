@@ -84,11 +84,14 @@ class Search extends React.Component {
 
   render() {
     const { classes, errorMessageQuery } = this.props;
+    const basePath = process.env.NODE_ENV === 'production' ?
+                       '/spotify-player/': '/';
+    const imgSrc = `${basePath}${speaker.slice(1)}`;
 
     return (
       <div className={classes.root}>
         <Card className={classes.card}>
-          <CardMedia image={speaker} className={classes.cover}>
+          <CardMedia image={imgSrc} className={classes.cover}>
           </CardMedia>
           <CardContent className={classes.control}>
             <TextField

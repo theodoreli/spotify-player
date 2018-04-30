@@ -3,7 +3,16 @@ import { push } from 'react-router-redux';
 import querystring from 'querystring';
 
 import * as types from '../constants/actionTypes.js';
+import * as apiConsts from '../constants/apiConstants.js';
 import { getAccessToken } from '../selectors';
+
+let baseUrl;
+
+if (process.env.NODE_ENV === apiConsts.ENV_PROD) {
+  baseUrl = apiConsts.ROUTING_BASE_SUB_PATH_PROD;
+} else {
+  baseUrl = apiConsts.ROUTING_BASE_SUB_PATH_DEV;
+}
 
 export const addTracks = value => ({
   type: types.FETCH_TRACKS,
@@ -70,7 +79,7 @@ export const fetchTracks = query => async (dispatch, getState) => {
        */
       dispatch(addTracks(null));
       dispatch(setAccessToken(null));
-      dispatch(push('/'))
+      dispatch(push(`${baseUrl}`))
     }
   }
 
@@ -87,7 +96,7 @@ export const fetchTracks = query => async (dispatch, getState) => {
   dispatch(addTracks(filtered));
 
   // XXX: Bandaid. Need to dispatch this twice otherwise we do not reroute
-  dispatch(push('/player/'));
-  dispatch(push('/player/'));
+  dispatch(push(`${baseUrl}player`));
+  dispatch(push(`${baseUrl}player`));
 };
 
