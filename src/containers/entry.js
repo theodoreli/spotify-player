@@ -7,12 +7,11 @@ import querystring from 'querystring';
 
 import { fetchAccessToken } from '../actions/';
 import { getAccessToken } from '../selectors/';
+import { AUTH_REDIRECT_BASE_URL } from '../constants/apiConstants.js';
 import {
-  AUTH_REDIRECT_BASE_URL,
-  AUTH_QUERY_PARAMS_PROD,
-  AUTH_QUERY_PARAMS_DEV,
-  ENV_PROD,
-} from '../constants/apiConstants.js';
+  ROUTING_BASE_PATH_MAPPED as basePath,
+  AUTH_QUERY_PARAMS_MAPPED as queryParams,
+} from '../constants/envMappedConstants.js';
 
 const root = `
   width: 980px;
@@ -28,8 +27,6 @@ class Entry extends Component {
     this.state = {
       isUserLoggedIn: null,
     };
-    const queryParams = process.env.NODE_ENV === ENV_PROD ?
-                          AUTH_QUERY_PARAMS_PROD: AUTH_QUERY_PARAMS_DEV;
     this.redirectUrl = AUTH_REDIRECT_BASE_URL +
                          querystring.stringify(queryParams);
     this._isUserLoggedIn = this._isUserLoggedIn.bind(this);
@@ -55,11 +52,10 @@ class Entry extends Component {
     const tp = this.props;
     const renderWelcome = () => (
       <div className={tp.classes.root}>
-        Welcome! Will redirect you in a moment if you need to login
+        Welcome! If you are not logged through Spotify, you will be redirected there.
+        Otherwise, you will be redirected to the song search page.
       </div>
     )
-    const basePath = process.env.NODE_ENV === ENV_PROD ?
-                       '/spotify-player/': '/';
 
     return (
       <div>
