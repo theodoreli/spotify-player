@@ -8,6 +8,24 @@ import { ROUTING_BASE_PATH_MAPPED as basePath } from '../constants/envMappedCons
 import Search from '../components/search.js';
 import Player from '../components/player.js';
 
+const redirectMessage = `
+  width: 400px;
+  font-size: 24px;
+  font-weight: 300;
+`;
+
+const root = `
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: inherit;
+  height: inherit
+`;
+
+const compatWarning = `
+  font-size: 14px;
+`;
+
 const sheet = {
   '@global': {
     'html, body, div#root': `
@@ -26,26 +44,38 @@ const sheet = {
       color: #24292e;
       text-decoration: none;
     `
-  }
+  },
+  compatWarning,
+  redirectMessage,
+  root,
 };
 
 class App extends Component {
   componentDidMount() {
-    this.props.loginIfNeeded();
+    setTimeout(() => {
+      this.props.loginIfNeeded();
+    }, 1000);
   }
 
   render() {
-    const renderWelcome = () => (
-      <div>
-        Welcome! If you are not logged through Spotify, you will be redirected there.
-        Otherwise, you will be redirected to the song search page.
+    const { classes } = this.props;
+    const redirectMsg = () => (
+      <div className={classes.root}>
+        <div className={classes.redirectMessage}>
+          <p>Welcome!</p>
+          <p>If you are not logged through Spotify, you will be redirected there.</p>
+          <p>Otherwise, you will be redirected to the song search page.</p>
+          <p className={classes.compatWarning}>
+            This web app is compatible with Chrome. Other browsers have not yet been verified.
+          </p>
+        </div>
       </div>
     );
 
     return (
       <JssProvider>
         <Switch>
-          <Route exact path={`${basePath}`} render={renderWelcome}/>
+          <Route exact path={`${basePath}`} render={redirectMsg}/>
           <Route exact path={`${basePath}search`} component={Search}/>
           <Route exact path={`${basePath}player`} component={Player}/>
           <Redirect to={`${basePath}`} />
@@ -54,8 +84,9 @@ class App extends Component {
     )
   }
 }
+
 function mapStateToProps(state) {
-  return {allState: state}
+  return {state}
 }
 
 const connected = connect(mapStateToProps, {
