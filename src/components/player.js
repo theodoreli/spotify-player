@@ -142,8 +142,12 @@ class Player extends React.Component {
               <SkipPreviousIcon onClick={this.handlePrev} />
             </IconButton>
             <IconButton aria-label="Play/Pause">
-              { !this.state.isPaused ? <PauseIcon onClick={this.handlePause} />
-                                     : <PlayArrowIcon onClick={this.handlePlay} className={tp.classes.playIcon} /> }
+              { !this.state.isPaused
+                  ? <PauseIcon onClick={this.handlePause} />
+                  : <PlayArrowIcon
+                      onClick={this.handlePlay}
+                      className={tp.classes.playIcon} />
+              }
             </IconButton>
             <IconButton aria-label="Next">
               <SkipNextIcon onClick={this.handleNext}/>
