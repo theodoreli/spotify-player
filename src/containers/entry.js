@@ -58,12 +58,14 @@ class Entry extends Component {
         Welcome! Will redirect you in a moment if you need to login
       </div>
     )
+    const basePath = process.env.NODE_ENV === ENV_PROD ?
+                       '/spotify-player/': '/';
 
     return (
       <div>
         { this.state.isUserLoggedIn === null ? renderWelcome()
           : this.state.isUserLoggedIn
-            ? (<Redirect push to="/search"/>)
+            ? (<Redirect push to={`${basePath}search`} />)
             : window.location.replace(this.redirectUrl) }
       </div>
     )

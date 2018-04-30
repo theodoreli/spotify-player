@@ -11,3 +11,5 @@ export const AUTH_QUERY_PARAMS_PROD = {
 };
 export const ENV_PROD = 'production';
 export const ENV_DEV = 'development';
+export const ROUTING_BASE_SUB_PATH_PROD = '/spotify-player/';
+export const ROUTING_BASE_SUB_PATH_DEV = '/';

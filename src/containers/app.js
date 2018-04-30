@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Switch , Redirect, Route } from 'react-router';
+import { Switch , Redirect, Route, withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import injectSheet, {JssProvider} from 'react-jss';
 
 import Entry from '../containers/entry.js';
 import Search from '../components/search.js';
 import Player from '../components/player.js';
+import { ENV_PROD } from '../constants/apiConstants.js';
 
 const sheet = {
   '@global': {
@@ -30,14 +31,19 @@ const sheet = {
 };
 
 class App extends Component {
+  componentDidMount() {
+  }
+
   render() {
+    const basePath = process.env.NODE_ENV === ENV_PROD ?
+                       '/spotify-player/': '/';
     return (
       <JssProvider>
         <Switch>
-          <Route exact path="/" component={Entry}/>
-          <Route exact path="/search" component={Search}/>
-          <Route exact path="/player" component={Player}/>
-          <Redirect to="/" />
+          <Route exact path={`${basePath}`} component={Entry}/>
+          <Route exact path={`${basePath}search`} component={Search}/>
+          <Route exact path={`${basePath}player`} component={Player}/>
+          <Redirect to={`${basePath}`} />
         </Switch>
       </JssProvider>
     )
@@ -48,4 +54,5 @@ function mapStateToProps(state) {
 }
 
 const connected = connect(mapStateToProps)(App);
-export default injectSheet(sheet)(connected);
+const connectedWithRouter = withRouter(connected)
+export default injectSheet(sheet)(connectedWithRouter);
