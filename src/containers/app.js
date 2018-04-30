@@ -7,26 +7,17 @@ import { loginIfNeeded } from '../actions';
 import { ROUTING_BASE_PATH_MAPPED as basePath } from '../constants/envMappedConstants.js';
 import Search from '../components/search.js';
 import Player from '../components/player.js';
-
-const redirectMessage = `
-  width: 400px;
-  font-size: 24px;
-  font-weight: 300;
-`;
-
-const root = `
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: inherit;
-  height: inherit
-`;
-
-const compatWarning = `
-  font-size: 14px;
-`;
+import RedirectMessage from '../components/redirect.js';
 
 const sheet = {
+  /*
+   * Warning, there seems to be a react-scripts 'build' issue where if
+   * you place a style object here, this style classname takes priority
+   * over downstream classnames of the same name.
+   *
+   * Does not happen in 'development' but in 'production' from what I have
+   * seen so far.
+   */
   '@global': {
     'html, body, div#root': `
       height: 100%;
@@ -45,9 +36,6 @@ const sheet = {
       text-decoration: none;
     `
   },
-  compatWarning,
-  redirectMessage,
-  root,
 };
 
 class App extends Component {
@@ -58,20 +46,6 @@ class App extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const RedirectMessage = () => (
-      <div className={classes.root}>
-        <div className={classes.redirectMessage}>
-          <p>Welcome!</p>
-          <p>If you are not logged through Spotify, you will be redirected there.</p>
-          <p>Otherwise, you will be redirected to the song search page.</p>
-          <p className={classes.compatWarning}>
-            This web app is compatible with Chrome. Other browsers have not yet been verified.
-          </p>
-        </div>
-      </div>
-    );
-
     return (
       <JssProvider>
         <Switch>
