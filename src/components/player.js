@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 import injectSheet from 'react-jss';
 import Card, { CardContent } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
-import ArrowBack from '@material-ui/icons/ArrowBack';
+import Search from '@material-ui/icons/Search';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
@@ -33,7 +33,13 @@ const cover = `
   height: 300px;
 `;
 
+const search = `
+  position: absolute;
+  left: 0px;
+`;
+
 const sheet = {
+  search,
   card,
   control,
   cover,
@@ -65,7 +71,7 @@ class Player extends React.Component {
     clearInterval(this.audioMetaInterval);
   }
 
-  handleBack = () => {
+  handleSearch = () => {
     this.props.dispatch(push(`${basePath}search`));
   }
 
@@ -112,9 +118,9 @@ class Player extends React.Component {
   }
 
   render() {
-    const tp = this.props;
+    const { classes } = this.props;
     const trackIndex = this.state.trackIndex;
-    const track = tp.state.app.tracks[trackIndex];
+    const track = this.props.state.app.tracks[trackIndex];
     const audioSrc = track.preview_url;
 
     const trackCoverProps = {
@@ -129,14 +135,17 @@ class Player extends React.Component {
     };
 
     return (
-      <div className={tp.classes.root}>
-        <Card className={tp.classes.card}>
+      <div className={classes.root}>
+        <Card className={classes.card} >
           <audio src={audioSrc} autoPlay ref={this.audio} />
           <TrackCover {...trackCoverProps} />
           <ProgressBar {...progressBarProps} />
-          <CardContent className={tp.classes.control}>
-            <IconButton aria-label="Back">
-              <ArrowBack onClick={this.handleBack} />
+          <CardContent
+            className={classes.control}
+            style={{alignItems: 'center'}}
+          >
+            <IconButton aria-label="Search" className={classes.search}>
+              <Search onClick={this.handleSearch} />
             </IconButton>
             <IconButton aria-label="Previous">
               <SkipPreviousIcon onClick={this.handlePrev} />
@@ -146,7 +155,7 @@ class Player extends React.Component {
                   ? <PauseIcon onClick={this.handlePause} />
                   : <PlayArrowIcon
                       onClick={this.handlePlay}
-                      className={tp.classes.playIcon} />
+                      className={classes.playIcon} />
               }
             </IconButton>
             <IconButton aria-label="Next">
