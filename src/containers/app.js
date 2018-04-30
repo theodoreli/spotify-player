@@ -59,7 +59,7 @@ class App extends Component {
 
   render() {
     const { classes } = this.props;
-    const redirectMsg = () => (
+    const RedirectMessage = () => (
       <div className={classes.root}>
         <div className={classes.redirectMessage}>
           <p>Welcome!</p>
@@ -75,7 +75,7 @@ class App extends Component {
     return (
       <JssProvider>
         <Switch>
-          <Route exact path={`${basePath}`} render={redirectMsg}/>
+          <Route exact path={`${basePath}`} component={RedirectMessage}/>
           <Route exact path={`${basePath}search`} component={Search}/>
           <Route exact path={`${basePath}player`} component={Player}/>
           <Redirect to={`${basePath}`} />
