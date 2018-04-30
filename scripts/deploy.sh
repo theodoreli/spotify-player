@@ -3,9 +3,11 @@
 cd $(dirname $0)
 set -e
 
+local GIT_POINTER=${1:-master}
+
 pushd ..
 git checkout gh-pages
-git branch | grep '* gh-pages' && git reset --hard master
+git branch | grep '* gh-pages' && git reset --hard $GIT_POINTER
 
 npm run build
 pushd build
@@ -21,4 +23,7 @@ git branch | grep '* gh-pages' && git push --force
 
 git checkout -
 
-echo "Deployed"
+echo "============================================================"
+echo
+echo "************************************************************"
+echo "Deployed succesfully from ${GIT_POINTER} to branch gh-pages"
