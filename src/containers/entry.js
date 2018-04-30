@@ -9,7 +9,10 @@ import { fetchAccessToken } from '../actions/';
 import { getAccessToken } from '../selectors/';
 import {
   AUTH_REDIRECT_BASE_URL,
-  AUTH_QUERY_PARAMS } from '../constants/apiConstants.js';
+  AUTH_QUERY_PARAMS_PROD,
+  AUTH_QUERY_PARAMS_DEV,
+  ENV_PROD,
+} from '../constants/apiConstants.js';
 
 const root = `
   width: 980px;
@@ -25,8 +28,10 @@ class Entry extends Component {
     this.state = {
       isUserLoggedIn: null,
     };
-    this.redirectUrl = AUTH_REDIRECT_BASE_URL
-                         + querystring.stringify(AUTH_QUERY_PARAMS);
+    const queryParams = process.env.NODE_ENV === ENV_PROD ?
+                          AUTH_QUERY_PARAMS_PROD: AUTH_QUERY_PARAMS_DEV;
+    this.redirectUrl = AUTH_REDIRECT_BASE_URL +
+                         querystring.stringify(queryParams);
     this._isUserLoggedIn = this._isUserLoggedIn.bind(this);
   }
 
