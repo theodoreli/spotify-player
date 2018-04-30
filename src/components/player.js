@@ -13,6 +13,7 @@ import SkipNextIcon from '@material-ui/icons/SkipNext';
 import { control } from '../shared-styles/';
 import TrackCover from '../components/trackCover.js';
 import ProgressBar from '../components/progressBar.js';
+import { ROUTING_BASE_PATH_MAPPED as basePath } from '../constants/envMappedConstants.js';
 
 const root = `
   width: inherit;
@@ -65,7 +66,7 @@ class Player extends React.Component {
   }
 
   handleBack = () => {
-    this.props.dispatch(push('/search/'));
+    this.props.dispatch(push(`${basePath}search`));
   }
 
   handlePause = () => {
@@ -81,7 +82,7 @@ class Player extends React.Component {
   handleNext = () => {
     if (this.state.trackIndex + 1 >= this.props.state.app.tracks.length) {
       // TODO: implement a popup that says we have exhausted all previewable tracks
-      this.props.dispatch(push('/search'));
+      this.props.dispatch(push(`${basePath}search`));
       return;
     }
 
