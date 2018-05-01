@@ -31,78 +31,74 @@ const redirectToSpotifyLogin = () => {
   window.location.replace(redirectUrl);
 };
 
-export const redirectToSpotifyLoginIfNeeded = () => (dispatch, getState) => {
-  const href = window.location.href;
-  let queryParams = href.split('?', 2)[1] || href.split('#', 2)[1];
-  if (!queryParams) {
-    redirectToSpotifyLogin();
-  }
-
-  const parsed = querystring.parse(queryParams);
-  const accessToken = parsed.access_token;
-
-  if (parsed.error || !accessToken) {
-    redirectToSpotifyLogin();
-  } else {
-    dispatch(setAccessToken(accessToken));
-    dispatch(push(`${basePath}search`));
-  }
-
-};
-
-export const loginIfNeeded = () => async (dispatch, getState) => {
+const isAccessTokenValid = async (dispatch, getState) => {
   const state = getState();
   const accessToken = getAccessToken(state);
+  if (!accessToken) {
+    return false;
+  }
+
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
 
-  if (accessToken) {
-    try {
-      // If there exists an accessToken, test that it actually works.
-      await axios.get(`https://api.spotify.com/v1/search`
-                   + `?q=justin`
-                   + `&type=track`
-                   + `&limit=1`,
-                   {headers})
-      dispatch(push(`${basePath}search`));
+  try {
+    // Test that accessToken actually works. This is important since we have
+    // Redux middleware that saves state to localstorage.
+    // This saved accessToken in localstorage could be stale upon access
+    await axios.get(`https://api.spotify.com/v1/search`
+                 + `?q=justin`
+                 + `&type=track`
+                 + `&limit=1`,
+                 {headers})
 
-    } catch (err) {
-      if (err.response.status === 401) {
-        /* If we are unauthorized, get the user to login again. It is likely that their
-         * token has expired.
-         */
-        dispatch(addTracks(null));
-        dispatch(setAccessToken(null));
-        dispatch(redirectToSpotifyLoginIfNeeded());
-      }
+    return true;
+  } catch (err) {
+    if (err.response.status === 401) {
+      dispatch(setAccessToken(null));
+    } else {
+      console.log('Error in requesting track search from Spotify API:')
+      console.log(err)
     }
-  } else {
-    dispatch(redirectToSpotifyLoginIfNeeded());
+    return false;
   }
-
 };
-export const fetchAccessToken = query => (dispatch, getState) => {
+
+export const isQueryParamsValid = (dispatch, getState) => {
   /*
-   * Spotfy places the access token as a query param.
+   * After the user logs in through the Spotify website,
+   * they are redirected to this app.
+   * Embedded in the redirect URL are query parameters that most importantly
+   * contains an accessToken we need for
+   * valid future requests to the Spotify API.
    */
-  const href = window.location.href;
-  let queryParams = href.split('?', 2)[1] || href.split('#', 2)[1];
-  if (!queryParams) return false
+  const url = window.location.href;
+
+  // Check '#' as it has been seen that Spotify uses that in place of the
+  // expected '?'.
+  let queryParams = url.split('?', 2)[1] || url.split('#', 2)[1];
+  if (!queryParams) {
+    return false
+  }
 
   const parsed = querystring.parse(queryParams);
   const accessToken = parsed.access_token;
+  const { error } = parsed;
 
-  if (parsed.error) {
-    // notify user that need to retry
+  if (error || !accessToken) {
     return false;
-  }
-
-  if (accessToken) {
-    dispatch(setAccessToken(accessToken));
-    return true;
   } else {
-    return false
+    dispatch(setAccessToken(accessToken));
+    return true
+  }
+};
+
+export const loginIfNeeded = () => (dispatch, getState) => {
+  const args = [dispatch, getState];
+  if (isQueryParamsValid.apply(this, args) || isAccessTokenValid.apply(this, args)) {
+    dispatch(push(`${basePath}search`));
+  } else {
+    redirectToSpotifyLogin();
   }
 };
 
@@ -153,4 +149,3 @@ export const fetchTracks = query => async (dispatch, getState) => {
   dispatch(push(`${basePath}player`));
   dispatch(push(`${basePath}player`));
 };
-
