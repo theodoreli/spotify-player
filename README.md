@@ -1,17 +1,17 @@
-<link href="https://raw.githubusercontent.com/theodoreli/spotify-player/master/docs/readme.css" rel="stylesheet"></link>
-
-<header>
-  <a href="https://theodoreli.github.io/spotify-player/">
+<div align="center">
+  <a target="_blank" href="https://theodoreli.github.io/spotify-player/">
     <img src="https://raw.githubusercontent.com/theodoreli/spotify-player/master/docs/search.png"/>
     <img src="https://raw.githubusercontent.com/theodoreli/spotify-player/master/docs/player.png"/>
   </a>
-</header>
+</div>
 
-<h1>
-  <a>Spotify Web Client</a>
+<h1 align="center">
+  <a style="font-size: 36px; color: black; text-decoration: none">Spotify Web Client</a>
 </h1>
 
+
 ---
+
 
 <h4 align="center">
   Browser client to stream free (previewable) songs from Spotify. Built with React & Redux.
