@@ -2,7 +2,7 @@
 ![search](../master/docs/search.png)
 ![player](../master/docs/player.png)
 
-[Click here](https://theodoreli.github.io/spotify-player/player) to try this web app
+[Click here](https://theodoreli.github.io/spotify-player/) to try this web app
 
 ---
 #### What is this?
@@ -25,5 +25,5 @@ This is a in browser client that can play free 30 second clips of songs. It conn
 
 
 ---
-[Click here](https://theodoreli.github.io/spotify-player/player) to try this web app
+[Click here](https://theodoreli.github.io/spotify-player/) to try this web app
 
