@@ -1,4 +1,4 @@
-<link href="docs/readme.css" rel="stylesheet"></link>
+<link href="https://raw.githubusercontent.com/theodoreli/spotify-player/master/docs/readme.css" rel="stylesheet"></link>
 
 <header>
   <a href="https://theodoreli.github.io/spotify-player/">
