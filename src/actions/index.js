@@ -35,7 +35,7 @@ const isAccessTokenValid = async (dispatch, getState) => {
   const state = getState();
   const accessToken = getAccessToken(state);
   if (!accessToken) {
-    return false;
+    return new Promise(resolve => resolve(false));
   }
 
   const headers = {
@@ -52,7 +52,7 @@ const isAccessTokenValid = async (dispatch, getState) => {
                  + `&limit=1`,
                  {headers})
 
-    return true;
+    return new Promise(resolve => resolve(true));
   } catch (err) {
     if (err.response.status === 401) {
       dispatch(setAccessToken(null));
@@ -60,7 +60,7 @@ const isAccessTokenValid = async (dispatch, getState) => {
       console.log('Error in requesting track search from Spotify API:')
       console.log(err)
     }
-    return false;
+    return new Promise(resolve => resolve(false));
   }
 };
 
@@ -93,9 +93,9 @@ export const isQueryParamsValid = (dispatch, getState) => {
   }
 };
 
-export const loginIfNeeded = () => (dispatch, getState) => {
+export const loginIfNeeded = () => async (dispatch, getState) => {
   const args = [dispatch, getState];
-  if (isQueryParamsValid.apply(this, args) || isAccessTokenValid.apply(this, args)) {
+  if (isQueryParamsValid.apply(this, args) || await isAccessTokenValid.apply(this, args)) {
     dispatch(push(`${basePath}search`));
   } else {
     redirectToSpotifyLogin();
