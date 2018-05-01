@@ -39,10 +39,9 @@ const sheet = {
 };
 
 class App extends Component {
-  componentDidMount() {
-    setTimeout(() => {
-      this.props.loginIfNeeded();
-    }, 1000);
+  async componentDidMount() {
+    await new Promise(resolve => setTimeout(() => resolve(), 1500));
+    this.props.loginIfNeeded();
   }
 
   render() {
