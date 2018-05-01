@@ -1,0 +1,14 @@
+header {
+  display: flex;
+  vertical-align: center;
+  justify-content: center;
+}
+
+h1 {
+  text-align: center;
+  font-size: 36px;
+  color: black !important;
+  text-decoration: none !important;
+}
+
+
