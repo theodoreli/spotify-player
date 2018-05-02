@@ -38,19 +38,20 @@ const isAccessTokenValid = async (dispatch, getState) => {
     return new Promise(resolve => resolve(false));
   }
 
-  const headers = {
-    Authorization: `Bearer ${accessToken}`
-  };
-
   try {
     // Test that accessToken actually works. This is important since we have
     // Redux middleware that saves state to localstorage.
     // This saved accessToken in localstorage could be stale upon access
-    await axios.get(`https://api.spotify.com/v1/search`
-                 + `?q=justin`
-                 + `&type=track`
-                 + `&limit=1`,
-                 {headers})
+    await axios.get('https://api.spotify.com/v1/search', {
+                  params: {
+                    'q': 'justin',
+                    'type': 'track',
+                    'limit': '1',
+                  },
+                  headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                  }
+                });
 
     return new Promise(resolve => resolve(true));
   } catch (err) {
@@ -82,8 +83,7 @@ export const isQueryParamsValid = (dispatch, getState) => {
   }
 
   const parsed = querystring.parse(queryParams);
-  const accessToken = parsed.access_token;
-  const { error } = parsed;
+  const { access_token: accessToken, error } = parsed;
 
   if (error || !accessToken) {
     return false;
@@ -110,17 +110,20 @@ export const fetchTracks = query => async (dispatch, getState) => {
   }
 
   const accessToken = getAccessToken(getState());
-  const headers = {
-    Authorization: `Bearer ${accessToken}`
-  };
 
   let response;
   try {
-    response = await axios.get(`https://api.spotify.com/v1/search`
-                 + `?q=${query}`
-                 + `&type=track`
-                 + `&limit=50`,
-                 {headers})
+    response = await axios.get('https://api.spotify.com/v1/search', {
+                  params: {
+                    'q': query,
+                    'type': 'track',
+                    'limit': '50',
+                  },
+                  headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                  }
+                });
+
   } catch (err) {
     if (err.response.status === 401) {
       /* If we are unauthorized, get the user to login again. It is likely that their
