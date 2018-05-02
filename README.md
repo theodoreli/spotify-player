@@ -1,6 +1,5 @@
 <div align="center">
   <a target="_blank" href="https://theodoreli.github.io/spotify-player/">
-    <img src="https://raw.githubusercontent.com/theodoreli/spotify-player/master/docs/search.png"/>
     <img src="https://raw.githubusercontent.com/theodoreli/spotify-player/master/docs/player.png"/>
   </a>
 </div>
