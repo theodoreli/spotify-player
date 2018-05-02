@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 import injectSheet from 'react-jss';
 import Card, { CardContent } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
-import Search from '@material-ui/icons/Search';
+import SearchIcon from '@material-ui/icons/Search';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
@@ -119,7 +119,7 @@ class Player extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const trackIndex = this.state.trackIndex;
+    const { isPaused, trackIndex } = this.state;
     const track = this.props.state.app.tracks[trackIndex];
     const audioSrc = track.preview_url;
 
@@ -144,22 +144,25 @@ class Player extends React.Component {
             className={classes.control}
             style={{alignItems: 'center'}}
           >
-            <IconButton aria-label="Search" className={classes.search}>
-              <Search onClick={this.handleSearch} />
+            <IconButton
+              aria-label="Search"
+              onClick={this.handleSearch}
+              className={classes.search}
+            >
+              <SearchIcon />
             </IconButton>
-            <IconButton aria-label="Previous">
-              <SkipPreviousIcon onClick={this.handlePrev} />
+            <IconButton aria-label="Previous" onClick={this.handlePrev} >
+              <SkipPreviousIcon />
             </IconButton>
-            <IconButton aria-label="Play/Pause">
-              { !this.state.isPaused
-                  ? <PauseIcon onClick={this.handlePause} />
-                  : <PlayArrowIcon
-                      onClick={this.handlePlay}
-                      className={classes.playIcon} />
+            <IconButton aria-label="Play/Pause" onClick={
+             !isPaused ? this.handlePause: this.handlePlay}>
+              { !isPaused
+                  ? <PauseIcon />
+                  : <PlayArrowIcon />
               }
             </IconButton>
-            <IconButton aria-label="Next">
-              <SkipNextIcon onClick={this.handleNext}/>
+            <IconButton aria-label="Next" onClick={this.handleNext}>
+              <SkipNextIcon />
             </IconButton>
           </CardContent>
         </Card>
