@@ -36,7 +36,7 @@ const errorMessage = `
 `;
 
 const searchBar = `
-  width: 90%;
+  width: 80%;
 `;
 
 const sheet = {
@@ -88,20 +88,20 @@ class Search extends React.Component {
         <Card className={classes.card}>
           <CardMedia image={imgSrc} className={classes.cover}>
           </CardMedia>
-          <CardContent className={classes.control}>
+          <div className={classes.control}>
             <TextField
              id="search"
-             label="Search by song"
+             placeholder="Search by song"
              type="search"
              className={classes.searchBar}
-             margin="normal"
+             margin="none"
              onChange={this.handleChange}
              onKeyUp={this.handleKeyUp}
              value={this.state.searchValue}
              FormHelperTextProps={{className: classes.errorMessage}}
              helperText={errorMessageQuery}
             />
-          </CardContent>
+          </div>
         </Card>
       </div>
     )

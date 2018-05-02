@@ -140,10 +140,7 @@ class Player extends React.Component {
           <audio src={audioSrc} autoPlay ref={this.audio} />
           <TrackCover {...trackCoverProps} />
           <ProgressBar {...progressBarProps} />
-          <CardContent
-            className={classes.control}
-            style={{alignItems: 'center'}}
-          >
+          <div className={classes.control} >
             <IconButton
               aria-label="Search"
               onClick={this.handleSearch}
@@ -164,7 +161,7 @@ class Player extends React.Component {
             <IconButton aria-label="Next" onClick={this.handleNext}>
               <SkipNextIcon />
             </IconButton>
-          </CardContent>
+          </div>
         </Card>
       </div>
     )
