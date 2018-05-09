@@ -1,13 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import injectSheet from 'react-jss';
-import Card, { CardContent, CardMedia } from 'material-ui/Card';
+import Card, { CardMedia } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 
 import {
   addErrorMessageQuery,
   fetchTracks } from '../actions';
 import { getErrorMessageQuery } from '../selectors';
+import {
+  ROUTING_BASE_PATH_MAPPED as basePath
+} from '../constants/envMappedConstants.js';
 import speaker from '../imgs/speaker.jpg';
 import { control } from '../shared-styles/';
 
@@ -57,14 +60,13 @@ class Search extends React.Component {
 
     // So that on page refresh, we don't have lingering error messages.
     this.props.addErrorMessageQuery('');
-    this.handleKeyUp = this.handleKeyUp.bind(this);
   }
 
   handleChange = (ev) => {
     this.setState({searchValue: ev.target.value});
   }
 
-  async handleKeyUp(ev) {
+  handleKeyUp = async (ev) => {
     if (ev.key !== 'Enter') {
       return;
     }
@@ -79,8 +81,6 @@ class Search extends React.Component {
 
   render() {
     const { classes, errorMessageQuery } = this.props;
-    const basePath = process.env.NODE_ENV === 'production' ?
-                       '/spotify-player/': '/';
     const imgSrc = `${basePath}${speaker.slice(1)}`;
 
     return (

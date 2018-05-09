@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import injectSheet from 'react-jss';
-import Card, { CardContent } from 'material-ui/Card';
+import Card from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
