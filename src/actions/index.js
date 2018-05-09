@@ -9,6 +9,7 @@ import {
   AUTH_QUERY_PARAMS_MAPPED as queryParams,
 } from '../constants/envMappedConstants.js';
 import { getAccessToken } from '../selectors';
+import getTrackCollection from '../parsers/tracks.js';
 
 export const addTracks = value => ({
   type: types.FETCH_TRACKS,
@@ -136,17 +137,16 @@ export const fetchTracks = query => async (dispatch, getState) => {
     }
   }
 
-  if (response.data.tracks.items.length === 0) {
+  const trackCollection = getTrackCollection(response.data);
+
+  if (trackCollection.length === 0) {
     const msg = `Looks like your search "${query}" `
                   + `didn't return any tracks. Try another search term`
     dispatch(addErrorMessageQuery(msg));
     return;
   }
 
-  // Only return the tracks that have a previewable song track
-  const filtered = response.data.tracks.items.filter((item) => item.preview_url);
-
-  dispatch(addTracks(filtered));
+  dispatch(addTracks(trackCollection));
 
   // XXX: Bandaid. Need to dispatch this twice otherwise we do not reroute
   dispatch(push(`${basePath}player`));
