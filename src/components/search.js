@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import injectSheet from 'react-jss';
-import PT from 'prop-types';
-import Card, { CardMedia } from 'material-ui/Card';
+import Card, { CardContent, CardMedia } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 
 import {
@@ -108,12 +107,6 @@ class Search extends React.Component {
     )
   }
 }
-
-Search.propTypes = {
-  addErrorMessageQuery: PT.func.isRequired,
-  errorMessageQuery: PT.string.isRequired,
-  fetchTracks: PT.func.isRequired,
-};
 
 function mapStateToProps(state) {
   return {

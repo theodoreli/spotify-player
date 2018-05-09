@@ -1,6 +1,5 @@
 import React from 'react';
 import injectSheet from 'react-jss';
-import PT from 'prop-types';
 
 const redirectMessage = `
   width: 400px;
@@ -38,9 +37,5 @@ const RedirectMessage = ({classes}) => (
     </div>
   </div>
 );
-
-RedirectMessage.propTypes = {
-  classes: PT.object.isRequired,
-};
 
 export default injectSheet(sheet)(RedirectMessage);

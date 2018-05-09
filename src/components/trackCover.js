@@ -1,6 +1,5 @@
 import injectSheet from 'react-jss';
 import React from 'react';
-import PT from 'prop-types';
 
 const root = `
   display: flex;
@@ -12,10 +11,6 @@ const root = `
   background-repeat: no-repeat;
   background-position: center;
 `;
-
-const rootBg = {
-  backgroundImage: data => `url(${data.albumImgSrc})`
-};
 
 const meta = `
   display: flex;
@@ -41,24 +36,19 @@ const sheet = {
   artists,
   meta,
   root,
-  rootBg,
   trackName,
 };
 
-const TrackCover = ({classes, trackName, artist, albumImgSrc}) => (
-  <div className={[classes.root, classes.rootBg].join(' ')}>
+const TrackCover = ({classes, trackName, artists, albumImg}) => (
+  <div
+   className={classes.root}
+   style={{backgroundImage: `url(${albumImg})`}}
+  >
     <div className={classes.meta}>
       <span className={classes.trackName}>{trackName}</span>
-      <span className={classes.artists}>{artist}</span>
+      <span className={classes.artists}>{artists}</span>
     </div>
   </div>
 );
-
-TrackCover.propTypes = {
-  albumImgSrc: PT.string.isRequired,
-  artist: PT.string.isRequired,
-  classes: PT.object.isRequired,
-  trackName: PT.string.isRequired,
-};
 
 export default injectSheet(sheet)(TrackCover);

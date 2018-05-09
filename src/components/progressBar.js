@@ -1,6 +1,5 @@
 import injectSheet from 'react-jss';
 import React from 'react';
-import PT from 'prop-types';
 
 const root = `
   display: flex;
@@ -39,12 +38,6 @@ const ProgressBar = ({classes, duration, currentTime}) => {
       </div>
     </div>
   );
-};
-
-ProgressBar.propTypes = {
-  duration: PT.number.isRequired,
-  classes: PT.object.isRequired,
-  currentTime: PT.number.isRequired,
 };
 
 export default injectSheet(sheet)(ProgressBar);
