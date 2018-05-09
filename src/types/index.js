@@ -4,6 +4,7 @@ export const Track = new ObjectModel({
   albumImgSrc: String,
   artist: String,
   audioSrc: String,
+  trackName: String,
 });
 
 // in our action where we get this data,
