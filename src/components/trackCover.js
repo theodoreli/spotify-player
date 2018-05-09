@@ -57,9 +57,10 @@ const TrackCover = ({classes, trackName, artists, albumImg}) => (
 );
 
 TrackCover.propTypes = {
-  trackName: PT.string.isRequired,
-  artists: PT.string.isRequired,
   albumImg: PT.string.isRequired,
+  artists: PT.string.isRequired,
+  classes: PT.object.isRequired,
+  trackName: PT.string.isRequired,
 };
 
 export default injectSheet(sheet)(TrackCover);
