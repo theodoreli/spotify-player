@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import injectSheet from 'react-jss';
+import PT from 'prop-types';
 import Card from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
@@ -104,29 +105,22 @@ class Player extends React.Component {
     }
   }
 
-  _getArtists = artists => {
-    let result = artists[0].name;
-
-    if (artists.length === 1) {
-      return result
-    }
-
-    const featuredArtists = artists.slice(1).map(artist => artist.name).join(', ');
-    result += ' feat. ' + featuredArtists;
-
-    return result
-  }
-
   render() {
     const { classes } = this.props;
     const { isPaused, trackIndex } = this.state;
+
     const track = this.props.state.app.tracks[trackIndex];
-    const audioSrc = track.preview_url;
+    const {
+      albumImgSrc,
+      artist,
+      audioSrc,
+      trackName,
+    } = track
 
     const trackCoverProps = {
-      albumImg: track.album.images[1].url,
-      artists: this._getArtists(track.artists),
-      trackName: track.name,
+      albumImgSrc,
+      artist,
+      trackName,
     };
 
     const progressBarProps = {
@@ -167,6 +161,16 @@ class Player extends React.Component {
     )
   }
 }
+
+Player.propTypes = {
+  classes: PT.object.isRequired,
+  state: PT.shape({
+    app: PT.shape({
+      tracks: PT.array.isRequired
+    })
+  }),
+
+};
 
 function mapStateToProps(state) {
   return {state}

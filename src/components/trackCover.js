@@ -14,7 +14,7 @@ const root = `
 `;
 
 const rootBg = {
-  backgroundImage: data => `url(${data.albumImg})`
+  backgroundImage: data => `url(${data.albumImgSrc})`
 };
 
 const meta = `
@@ -45,20 +45,20 @@ const sheet = {
   trackName,
 };
 
-const TrackCover = ({classes, trackName, artists, albumImg}) => (
+const TrackCover = ({classes, trackName, artist, albumImgSrc}) => (
   <div
    className={[classes.root, classes.rootBg].join(' ')}
   >
     <div className={classes.meta}>
       <span className={classes.trackName}>{trackName}</span>
-      <span className={classes.artists}>{artists}</span>
+      <span className={classes.artists}>{artist}</span>
     </div>
   </div>
 );
 
 TrackCover.propTypes = {
-  albumImg: PT.string.isRequired,
-  artists: PT.string.isRequired,
+  albumImgSrc: PT.string.isRequired,
+  artist: PT.string.isRequired,
   classes: PT.object.isRequired,
   trackName: PT.string.isRequired,
 };
