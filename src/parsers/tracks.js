@@ -21,6 +21,9 @@ const getTrackCollection = (response) => {
   if (!trackCollection) {
     throw new Error('Spotify track response parsing error. See if Spotify has changed their API.')
   }
+  if (trackCollection.length === 0) {
+    return [];
+  }
 
   const toReturn = [];
 

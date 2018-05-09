@@ -137,14 +137,15 @@ export const fetchTracks = query => async (dispatch, getState) => {
     }
   }
 
-  if (response.data.tracks.items.length === 0) {
+  const trackCollection = getTrackCollection(response.data);
+
+  if (trackCollection.length === 0) {
     const msg = `Looks like your search "${query}" `
                   + `didn't return any tracks. Try another search term`
     dispatch(addErrorMessageQuery(msg));
     return;
   }
 
-  const trackCollection = getTrackCollection(response.data);
   dispatch(addTracks(trackCollection));
 
   // XXX: Bandaid. Need to dispatch this twice otherwise we do not reroute
