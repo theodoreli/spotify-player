@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Switch , Redirect, Route, withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import injectSheet, {JssProvider} from 'react-jss';
+import PT from 'prop-types';
 
 import { loginIfNeeded } from '../actions';
 import { ROUTING_BASE_PATH_MAPPED as basePath } from '../constants/envMappedConstants.js';
@@ -58,11 +59,11 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {state}
-}
+App.propTypes = {
+  loginIfNeeded: PT.func.isRequired,
+};
 
-const connected = connect(mapStateToProps, {
+const connected = connect(null, {
   loginIfNeeded,
 })(App);
 const connectedWithRouter = withRouter(connected)
