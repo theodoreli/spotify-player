@@ -46,9 +46,7 @@ const sheet = {
 };
 
 const TrackCover = ({classes, trackName, artist, albumImgSrc}) => (
-  <div
-   className={[classes.root, classes.rootBg].join(' ')}
-  >
+  <div className={[classes.root, classes.rootBg].join(' ')}>
     <div className={classes.meta}>
       <span className={classes.trackName}>{trackName}</span>
       <span className={classes.artists}>{artist}</span>
