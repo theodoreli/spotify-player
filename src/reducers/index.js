@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
-import * as types from '../constants/actionTypes.js';
+import * as types from '../constants/actionTypes';
 
 const initialState = {
   accessToken: '',

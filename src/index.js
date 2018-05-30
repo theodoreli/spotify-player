@@ -7,12 +7,12 @@ import thunk from 'redux-thunk';
 import createHistory from 'history/createBrowserHistory';
 
 import rootReducer from './reducers';
-import App from './containers/app.js';
+import App from './containers/app';
 import registerServiceWorker from './registerServiceWorker';
 
 const loadState = () => {
   try {
-    const serializedState = localStorage.getItem('state');
+    const serializedState = window.localStorage.getItem('state');
     if (serializedState === null) {
       return undefined;
     }
@@ -25,7 +25,7 @@ const loadState = () => {
 const saveState = (state) => {
   try {
     const serializedState = JSON.stringify(state);
-    localStorage.setItem('state', serializedState);
+    window.localStorage.setItem('state', serializedState);
   } catch (e) {
     console.log(e);
   }
@@ -49,7 +49,7 @@ ReactDOM.render(
     <ConnectedRouter history={history}>
       <App />
     </ConnectedRouter>
-   </Provider>),
+  </Provider>),
   document.getElementById('root'),
 );
 registerServiceWorker();

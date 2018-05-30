@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import injectSheet, { JssProvider } from 'react-jss';
 
 import { loginIfNeeded } from '../actions';
-import { ROUTING_BASE_PATH_MAPPED as basePath } from '../constants/envMappedConstants.js';
-import Search from '../components/search.js';
-import Player from '../components/player.js';
-import RedirectMessage from '../components/redirect.js';
+import { ROUTING_BASE_PATH_MAPPED as basePath } from '../constants/envMappedConstants';
+import Search from '../components/search';
+import Player from '../components/player';
+import RedirectMessage from '../components/redirect';
 
 const sheet = {
   /*
