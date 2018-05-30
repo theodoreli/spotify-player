@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { routerReducer} from 'react-router-redux';
+import { routerReducer } from 'react-router-redux';
 import * as types from '../constants/actionTypes.js';
 
 const initialState = {
@@ -13,19 +13,19 @@ const app = (state = initialState, action) => {
     case types.SET_ACCESS_TOKEN:
       return {
         ...state,
-        accessToken: action.value
+        accessToken: action.value,
       };
 
     case types.FETCH_TRACKS:
       return {
         ...state,
-        tracks: action.value
+        tracks: action.value,
       };
 
     case types.SET_ERROR_MESSAGE_QUERY:
       return {
         ...state,
-        errorMessageQuery: action.value
+        errorMessageQuery: action.value,
       };
 
     default:

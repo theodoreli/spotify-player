@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Switch , Redirect, Route, withRouter } from 'react-router';
+import { Switch, Redirect, Route, withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import injectSheet, {JssProvider} from 'react-jss';
+import injectSheet, { JssProvider } from 'react-jss';
 
 import { loginIfNeeded } from '../actions';
 import { ROUTING_BASE_PATH_MAPPED as basePath } from '../constants/envMappedConstants.js';
@@ -31,10 +31,10 @@ const sheet = {
       margin: 0;
       padding: 0;
     `,
-    'a': `
+    a: `
       color: #24292e;
       text-decoration: none;
-    `
+    `,
   },
 };
 
@@ -48,22 +48,22 @@ class App extends Component {
     return (
       <JssProvider>
         <Switch>
-          <Route exact path={`${basePath}`} component={RedirectMessage}/>
-          <Route exact path={`${basePath}search`} component={Search}/>
-          <Route exact path={`${basePath}player`} component={Player}/>
+          <Route exact path={`${basePath}`} component={RedirectMessage} />
+          <Route exact path={`${basePath}search`} component={Search} />
+          <Route exact path={`${basePath}player`} component={Player} />
           <Redirect to={`${basePath}`} />
         </Switch>
       </JssProvider>
-    )
+    );
   }
 }
 
 function mapStateToProps(state) {
-  return {state}
+  return { state };
 }
 
 const connected = connect(mapStateToProps, {
   loginIfNeeded,
 })(App);
-const connectedWithRouter = withRouter(connected)
+const connectedWithRouter = withRouter(connected);
 export default injectSheet(sheet)(connectedWithRouter);

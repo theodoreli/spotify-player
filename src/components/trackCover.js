@@ -39,10 +39,12 @@ const sheet = {
   trackName,
 };
 
-const TrackCover = ({classes, trackName, artists, albumImg}) => (
+const TrackCover = ({
+  classes, trackName, artists, albumImg,
+}) => (
   <div
-   className={classes.root}
-   style={{backgroundImage: `url(${albumImg})`}}
+    className={classes.root}
+    style={{ backgroundImage: `url(${albumImg})` }}
   >
     <div className={classes.meta}>
       <span className={classes.trackName}>{trackName}</span>

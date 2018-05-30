@@ -12,17 +12,17 @@ import { getAccessToken } from '../selectors';
 
 export const addTracks = value => ({
   type: types.FETCH_TRACKS,
-  value
+  value,
 });
 
 export const addErrorMessageQuery = value => ({
   type: types.SET_ERROR_MESSAGE_QUERY,
-  value
+  value,
 });
 
 export const setAccessToken = value => ({
   type: types.SET_ACCESS_TOKEN,
-  value
+  value,
 });
 
 const redirectToSpotifyLogin = () => {
@@ -43,23 +43,23 @@ const isAccessTokenValid = async (dispatch, getState) => {
     // Redux middleware that saves state to localstorage.
     // This saved accessToken in localstorage could be stale upon access
     await axios.get('https://api.spotify.com/v1/search', {
-                  params: {
-                    'q': 'justin',
-                    'type': 'track',
-                    'limit': '1',
-                  },
-                  headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                  }
-                });
+      params: {
+        q: 'justin',
+        type: 'track',
+        limit: '1',
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
     return new Promise(resolve => resolve(true));
   } catch (err) {
     if (err.response.status === 401) {
       dispatch(setAccessToken(null));
     } else {
-      console.log('Error in requesting track search from Spotify API:')
-      console.log(err)
+      console.log('Error in requesting track search from Spotify API:');
+      console.log(err);
     }
     return new Promise(resolve => resolve(false));
   }
@@ -77,9 +77,9 @@ export const isQueryParamsValid = (dispatch, getState) => {
 
   // Check '#' as it has been seen that Spotify uses that in place of the
   // expected '?'.
-  let queryParams = url.split('?', 2)[1] || url.split('#', 2)[1];
+  const queryParams = url.split('?', 2)[1] || url.split('#', 2)[1];
   if (!queryParams) {
-    return false
+    return false;
   }
 
   const parsed = querystring.parse(queryParams);
@@ -87,10 +87,9 @@ export const isQueryParamsValid = (dispatch, getState) => {
 
   if (error || !accessToken) {
     return false;
-  } else {
-    dispatch(setAccessToken(accessToken));
-    return true
   }
+  dispatch(setAccessToken(accessToken));
+  return true;
 };
 
 export const loginIfNeeded = () => async (dispatch, getState) => {
@@ -114,16 +113,15 @@ export const fetchTracks = query => async (dispatch, getState) => {
   let response;
   try {
     response = await axios.get('https://api.spotify.com/v1/search', {
-                  params: {
-                    'q': query,
-                    'type': 'track',
-                    'limit': '50',
-                  },
-                  headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                  }
-                });
-
+      params: {
+        q: query,
+        type: 'track',
+        limit: '50',
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
   } catch (err) {
     if (err.response.status === 401) {
       /* If we are unauthorized, get the user to login again. It is likely that their
@@ -131,20 +129,20 @@ export const fetchTracks = query => async (dispatch, getState) => {
        */
       dispatch(addTracks(null));
       dispatch(setAccessToken(null));
-      //dispatch(push(`${basePath}`))
+      // dispatch(push(`${basePath}`))
       redirectToSpotifyLogin();
     }
   }
 
   if (response.data.tracks.items.length === 0) {
     const msg = `Looks like your search "${query}" `
-                  + `didn't return any tracks. Try another search term`
+                  + 'didn\'t return any tracks. Try another search term';
     dispatch(addErrorMessageQuery(msg));
     return;
   }
 
   // Only return the tracks that have a previewable song track
-  const filtered = response.data.tracks.items.filter((item) => item.preview_url);
+  const filtered = response.data.tracks.items.filter(item => item.preview_url);
 
   dispatch(addTracks(filtered));
 

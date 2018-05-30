@@ -23,9 +23,9 @@ const sheet = {
   compatWarning,
   redirectMessage,
   root,
-}
+};
 
-const RedirectMessage = ({classes}) => (
+const RedirectMessage = ({ classes }) => (
   <div className={classes.root}>
     <div className={classes.redirectMessage}>
       <p>Welcome!</p>

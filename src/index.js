@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { ConnectedRouter, routerMiddleware } from 'react-router-redux'
-import thunk from 'redux-thunk'
-import createHistory from 'history/createBrowserHistory'
+import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
+import thunk from 'redux-thunk';
+import createHistory from 'history/createBrowserHistory';
 
 import rootReducer from './reducers';
 import App from './containers/app.js';
@@ -27,17 +27,17 @@ const saveState = (state) => {
     const serializedState = JSON.stringify(state);
     localStorage.setItem('state', serializedState);
   } catch (e) {
-    console.log(e)
+    console.log(e);
   }
 };
 
-const history = createHistory()
-const middleware = routerMiddleware(history)
+const history = createHistory();
+const middleware = routerMiddleware(history);
 
 const store = createStore(
   rootReducer,
   loadState(),
-  applyMiddleware(thunk, middleware)
+  applyMiddleware(thunk, middleware),
 );
 
 store.subscribe(() => {
@@ -46,9 +46,10 @@ store.subscribe(() => {
 
 ReactDOM.render(
   (<Provider store={store}>
-     <ConnectedRouter history={history}>
-       <App />
-     </ConnectedRouter>
+    <ConnectedRouter history={history}>
+      <App />
+    </ConnectedRouter>
    </Provider>),
-  document.getElementById('root'));
+  document.getElementById('root'),
+);
 registerServiceWorker();

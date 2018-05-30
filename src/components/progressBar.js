@@ -24,18 +24,16 @@ const sheet = {
   remaining,
 };
 
-const ProgressBar = ({classes, duration, currentTime}) => {
-  const elapsedPercentage = Math.ceil((currentTime/duration) * 100);
+const ProgressBar = ({ classes, duration, currentTime }) => {
+  const elapsedPercentage = Math.ceil((currentTime / duration) * 100);
   const compliment = 100 - elapsedPercentage;
 
   return (
     <div
-     className={classes.root}
+      className={classes.root}
     >
-      <div style={{width: `${elapsedPercentage}%`}} className={classes.elapsed}>
-      </div>
-      <div style={{width: `${compliment}%`}} className={classes.remaining}>
-      </div>
+      <div style={{ width: `${elapsedPercentage}%` }} className={classes.elapsed} />
+      <div style={{ width: `${compliment}%` }} className={classes.remaining} />
     </div>
   );
 };
